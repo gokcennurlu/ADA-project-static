@@ -40,13 +40,21 @@
         .navigation-item.active {
             background-color: #d9d9d9;
         }
+        
+        .bg-pattern {
+            background: linear-gradient(-45deg, rgba(0, 0, 0, 0) 25%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 75%, rgba(255, 255, 255, 0.2) 75%), linear-gradient(45deg, rgba(0, 0, 0, 0) 25%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 75%, rgba(255, 255, 255, 0.2) 75%), rgba(237, 237, 237, 1);
+            background-size: 100px 100px;
+            -webkit-box-shadow: 4px 0px 20px -3px rgba(161, 161, 161, 0.64);
+            -moz-box-shadow: 4px 0px 20px -3px rgba(161, 161, 161, 0.64);
+            box-shadow: 4px 0px 20px -3px rgba(161, 161, 161, 0.64);
+        }
     </style>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-2" style="padding: 0;">
+            <div class="col-sm-2 bg-pattern" style="padding: 0; height:100vh;">
                 <h1 class="text-center">
                     ADA Project
                 </h1>
@@ -152,13 +160,16 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#fullpage').fullpage({
-                afterLoad: function(anchorLink, index){
+
+            var cb = function(anchorLink, index){
                     console.log(index);
                     elems = $(".navigation-item")
                     elems.removeClass('active')
                     elems.eq(index-1).addClass('active')
-                }
+            }
+            $('#fullpage').fullpage({
+                afterLoad: cb,
+                onLeave : cb
             });
         });
     </script>

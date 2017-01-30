@@ -118,8 +118,32 @@ var type_format_mappers = {
     "monthly": (function () {
         var parser = function (column) {
             //generates Date object out of that column string
-            // like "YYYY,MM,DD"
+            // like "YYYY_MM_DD_blabla"
             return new Date(column.split("_po")[0].split("_").join("-") + "-01");
+        };
+
+        var printer = function (column) {
+            return column.split("_po")[0].split("_").join("-");
+        }
+
+        return {
+            "parser": parser,
+            "printer": printer,
+            "tick_count": 24
+        }
+    })(),
+    "weekly": (function () {
+        var dateFromDay = function (year, day) {
+            var date = new Date(year, 0); // initialize a date in `year-01-01`
+            return new Date(date.setDate(day)); // add the number of days
+        }
+
+        var parser = function (column) {
+            //generates Date object out of that column string
+            // like "YYYY__WEEKNUMBER_blabla"
+            var year = parseInt(column.split("_po")[0].split("_")[0]);
+            var week_num = parseInt(column.split("_po")[0].split("_")[1]);
+            return dateFromDay(year, week_num*7);
         };
 
         var printer = function (column) {

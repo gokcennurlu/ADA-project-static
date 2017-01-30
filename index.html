@@ -138,6 +138,7 @@
                                 <option value="daily2012">2012 Daily</option>
                                 <option value="days7">Days of week</option>
                                 <option value="monthly">Monthly</option>
+                                <option value="weekly">Weekly</option>
                             </select>
                         </div>
                         <div class="col-xs-10" style="padding-right: 20px;">
@@ -255,6 +256,13 @@
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/monthly/polarity_count_monthly_2012_2016.csv"
                 ],
                 type: "monthly"
+            },
+            "weekly": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/weekly/polarity_avg_weekly_2012_2016.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/weekly/polarity_count_weekly_2012_2016.csv"
+                ],
+                type: "weekly"
             }
         };
         var first_approach_map = generate_map(first_approach_map_types["daily2012"], "#first-section-contents", 900, 750, map_populator_callback);

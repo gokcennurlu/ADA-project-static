@@ -131,9 +131,8 @@
                             </div>
                             <div class="play"></div>
                             <select class="selectpicker">
-                                <option>Mustard</option>
-                                <option>Ketchup</option>
-                                <option>Relish</option>
+                                <option value="season">Seasonal</option>
+                                <option value="daily2012">2012 Daily</option>
                             </select>
                         </div>
                         <div class="col-xs-10" style="padding-right: 20px;">
@@ -151,7 +150,11 @@
                             <div class="map-container"></div>
                         </div>
                         <div class="col-xs-4">
-                            LALALA
+                            <h2>
+                                Emotion graph
+                            </h2>
+                            <div class="chart-container">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,12 +229,31 @@
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/Season/polarity_count_season.csv"
                 ],
                 type: "season"
+            },
+            "daily2012": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/daily2012/polarity_avg_daily_2012.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/daily2012/polarity_count_daily_2012.csv"
+                ],
+                type: "daily"
             }
-        }
-        //$(first_approach_container_id + " select").on('change', function () {
-        var first_approach_map = generate_map(first_approach_map_types["season"], "#first-section-contents", 900, 750, map_populator_callback);
-        //})
-    });
+        };
+        var first_approach_map = generate_map(first_approach_map_types["daily2012"], "#first-section-contents", 900, 750, map_populator_callback);
+        $("#first-section-contents").find("select").on('change', function () {
+            map_populator_callback(
+                first_approach_map.container_id,
+                first_approach_map.width,
+                first_approach_map.height,
+                first_approach_map.map,
+                first_approach_map.path,
+                first_approach_map.probe_selector,
+                first_approach_map.canton_id_to_geometry,
+                first_approach_map.svg,
+                first_approach_map.g,
+                first_approach_map_types[this.value]);
+        });
+    })
+    ;
 </script>
 </body>
 

@@ -51,11 +51,31 @@ var type_format_mappers = {
             "parser": parser,
             "printer": printer
         }
+    })(),
+
+    "daily": (function () {
+
+        var parser = function (column) {
+            //generates Date object out of that column string
+            // like "YYYY,MM,DD"
+            return new Date(column.split("_")[0].split(",").join("-"));
+        };
+
+        var printer = function (column) {
+            return column.split("_")[0].split(",").join("-");
+        }
+
+        return {
+            "parser": parser,
+            "printer": printer
+        }
     })()
 }
 
 var draw_line_chart = function (values, target) {
-    var parseDate = d3.time.format("%d-%b-%y").parse;
+    var margin = {top: 30, right: 20, bottom: 30, left: 50},
+        width = 400 - margin.left - margin.right,
+        height = 270 - margin.top - margin.bottom;
 
 // Set the ranges
     var x = d3.time.scale().range([0, width]);
@@ -74,11 +94,13 @@ var draw_line_chart = function (values, target) {
             return x(d.date);
         })
         .y(function (d) {
-            return y(d.close);
+            return y(d.value);
         });
 
 // Adds the svg canvas
-    var svg = d3.select("body")
+    d3.select(target + " svg").remove();
+
+    var svg = d3.select(target)
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -86,23 +108,18 @@ var draw_line_chart = function (values, target) {
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    data.forEach(function (d) {
-        d.date = parseDate(d.date);
-        d.close = +d.close;
-    });
-
     // Scale the range of the data
-    x.domain(d3.extent(data, function (d) {
+    x.domain(d3.extent(values, function (d) {
         return d.date;
     }));
-    y.domain([0, d3.max(data, function (d) {
-        return d.close;
+    y.domain([0, d3.max(values, function (d) {
+        return d.value;
     })]);
 
     // Add the valueline path.
     svg.append("path")
         .attr("class", "line")
-        .attr("d", valueline(data));
+        .attr("d", valueline(values));
 
     // Add the X Axis
     svg.append("g")
@@ -116,7 +133,9 @@ var draw_line_chart = function (values, target) {
         .call(yAxis);
 }
 
-var map_populator_callback = function (_container_id, _width, _height, map, path, probe, canton_id_to_geometry, svg, g, data_source) {
+var map_populator_callback = function (_container_id, _width, _height, map, path, probe_selector, canton_id_to_geometry, svg, g, data_source) {
+
+    var probe = d3.select(probe_selector);
 
     var VALUES_CSV = data_source.data[0];
     var COUNT_CSV = data_source.data[1];
@@ -125,7 +144,7 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
     var orderedColumns = [],
         currentFrame = 0,
         interval,
-        frameLength = 500,
+        frameLength = 1000,
         isPlaying = false;
 
     var column_to_date = type_format_mappers[data_source.type].parser;
@@ -168,7 +187,7 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
                 .attr("r", function (d) {
                     if (canton_to_count_map) {
                         var count = canton_to_count_map[d.canton][raw_column_string];
-                        return circleSize(count);
+                        return circleSize((count !== "No Data") ? count : 0);
                     }
                     return 0;
                 });
@@ -176,7 +195,7 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
             circle.attr("r", function (d) {
                 if (canton_to_count_map) {
                     var count = canton_to_count_map[d.canton][raw_column_string];
-                    return circleSize(count);
+                    return circleSize((count !== "No Data") ? count : 0);
                 }
                 return 0;
             });
@@ -193,13 +212,13 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
         map.selectAll('.canton').transition()  //select all the cantons and prepare for a transition to new values
             .duration(100)  // give it a smooth time period for the transition
             .attr('fill-opacity', function (d) {
-                var val = canton_to_data_map[d.id][raw_column_string];
+                var val = canton_to_data_map[d.id][raw_column_string] !== 'No Data' ? canton_to_data_map[d.id][raw_column_string] : 0;
 
                 var transparency = getColor(Math.abs(val), [0, 1]);
                 return transparency;// the end color value
             })
             .attr('fill', function (d) {
-                var val = canton_to_data_map[d.id][raw_column_string];
+                var val = canton_to_data_map[d.id][raw_column_string] !== 'No Data' ? canton_to_data_map[d.id][raw_column_string] : 0;
                 if (val > 0)
                     return "steelblue"
                 else
@@ -286,7 +305,8 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
             .scale(dateScale)
             .tickValues(dateScale.ticks(orderedColumns.length).filter(function (d, i) {
                 // ticks only for beginning of each year, plus first and last
-                return d.getMonth() == 0 || i == 0 || (i == orderedColumns.length - 1) || d.getMonth() % 6 == 0;
+                //return d.getMonth() == 0 || i == 0 || (i == orderedColumns.length - 1) || d.getMonth() % 6 == 0;
+                return i == 0 || (i == orderedColumns.length -1) || (i % Math.ceil(orderedColumns.length/6) == 0);
                 //return true;
             }))
             .tickFormat(function (d) {
@@ -346,6 +366,10 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
             }
         }
 
+        orderedColumns.sort(function (a, b) {
+            return column_to_date(a) - column_to_date(b);
+        });
+
         // draw city points
         for (var i in data) {
 
@@ -380,6 +404,16 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
             })
             .on("click", function (d) {
                 console.log(d);
+                var values = [];
+                var canton_data = canton_to_data_map[d.id];
+                for (var i in orderedColumns) {
+                    var date_column = orderedColumns[i];
+                    values.push({
+                        "value": (canton_data[date_column] !== "No Data") ? canton_data[date_column] : 0,
+                        "date": column_to_date(date_column)
+                    });
+                }
+                draw_line_chart(values, _container_id + " .chart-container");
             })
 
         //createLegend();
@@ -453,6 +487,7 @@ function generate_map(data_source, container_id, width, height, cb) {
         hoverData;
 
     var canton_id_to_geometry = {};
+    var probe_selector = container_id + "-probe";
 
     d3.json("data/swiss.topojson.json", function (error, canton_topoJson) {
         var as_geojson = topojson.feature(canton_topoJson, canton_topoJson.objects.cantons).features;
@@ -478,11 +513,13 @@ function generate_map(data_source, container_id, width, height, cb) {
             .attr("id", container_id.substr(1) + "-probe")
             .attr("class", "probe");
 
+
+
         as_geojson.forEach(function (canton_geo) {
             canton_id_to_geometry[canton_geo.id] = canton_geo;
         });
 
-        cb(container_id, width, height, map, path, probe, canton_id_to_geometry, svg, g, data_source); //initial loading
+        cb(container_id, width, height, map, path, probe_selector, canton_id_to_geometry, svg, g, data_source); //initial loading
     });
 
     return {
@@ -491,8 +528,8 @@ function generate_map(data_source, container_id, width, height, cb) {
         "height": height,
         "map": map,
         "path": path,
-        "probe": probe,
-        "canton_id_geometry": canton_id_to_geometry,
+        "probe_selector": probe_selector,
+        "canton_id_to_geometry": canton_id_to_geometry,
         "svg": svg,
         "g": g
     }

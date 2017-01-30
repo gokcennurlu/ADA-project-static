@@ -4,10 +4,18 @@
     overflow-y: scroll;
 }
 
-.navigation-item {
-    font-size: 28px;
+.menu-item {
+    font-size: 24px;
     padding: 15px;
     font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.canton {
+    fill: steelblue;
+    stroke: white;
+}
+
+.navigation-item {
 }
 
 .navigation-item.active {
@@ -22,106 +30,110 @@
     box-shadow: 4px 0px 20px -3px rgba(161, 161, 161, 0.64);
 }
 
-.padded{
+.padded {
     padding-left: 25px;
-    font-size: 24px;
+    font-size: 20px;
 }
 
 /**map related **/
 
-.date, .play, .slider-container{
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: 20px;
+.date, .play, .slider-container {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 20px;
 }
 
-.date{
-  border-left: 5px solid #ccc;
-  padding: 3px 0 3px 10px;
-  margin-left: 5px;
-  color: #333;
-}
-.date p{
-  margin: 0;
-}
-.date p:first-child{
-  color: #999;
-  font-size: 11px;
-  line-height: 13px;
-}
-.date p.month{
-  font-size: 15px;
-  line-height: 30px;
-}
-.date p.month span{
-  float: left;
-  width: 5.55em;
+.date {
+    border-left: 5px solid #ccc;
+    padding: 3px 0 3px 10px;
+    margin-left: 5px;
+    color: #333;
 }
 
-.play{
-  width: 53px;
-  height: 53px;
-  background-image: url(../img/play.png);
-  border-radius: 5px;
-  margin-left: 5px;
-  cursor: pointer;
+.date p {
+    margin: 0;
 }
 
-.play:hover{
-  background-position: 0 -53px;
+.date p:first-child {
+    color: #999;
+    font-size: 11px;
+    line-height: 13px;
 }
 
-.play.pause{
-  background-image: url(../img/pause.png);
-}
-.slider-container{
-  position: relative;
+.date p.month {
+    font-size: 15px;
+    line-height: 30px;
 }
 
-.slider-div{
-  margin-left: 65px;
-  margin-top: 10px;
+.date p.month span {
+    float: left;
+    width: 5.55em;
 }
 
-.slider-probe{
-  position: absolute;
-  top: -20px;
-  font-size: 12px;
-  width: 70px;
-  margin-left: -35px;
-  z-index: 50;
-  display: none;
+.play {
+    width: 53px;
+    height: 53px;
+    background-image: url(../img/play.png);
+    border-radius: 5px;
+    margin-left: 5px;
+    cursor: pointer;
 }
 
-.slider-probe p{
-  margin: 0;
-  width: 100%;
-  text-align: center;
-  height: 15px;
+.play:hover {
+    background-position: 0 -53px;
 }
 
-.slider-probe div{
-  height: 15px;
-  margin-left: 35px;
-  border-left: 1px solid #999;
+.play.pause {
+    background-image: url(../img/pause.png);
 }
 
-.axis path{
-  fill: none;
+.slider-container {
+    position: relative;
 }
 
-.axis .tick line{
-  stroke: #999;
+.slider-div {
+    margin-left: 65px;
+    margin-top: 10px;
 }
 
-.axis .tick text{
-  font-size: 12px;
+.slider-probe {
+    position: absolute;
+    top: -20px;
+    font-size: 12px;
+    width: 70px;
+    margin-left: -35px;
+    z-index: 50;
+    display: none;
 }
 
-.map-container{
-  margin: auto;
+.slider-probe p {
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    height: 15px;
 }
 
+.slider-probe div {
+    height: 15px;
+    margin-left: 35px;
+    border-left: 1px solid #999;
+}
+
+.axis path {
+    fill: none;
+}
+
+.axis .tick line {
+    stroke: #999;
+}
+
+.axis .tick text {
+    font-size: 12px;
+}
+
+.map-container {
+    margin: auto;
+}
 
 .land {
     fill: #f7f7f7;
@@ -134,16 +146,6 @@
 }
 
 circle {
-    fill: none;
-    stroke: #999;
-}
-
-circle.gain {
-    fill: #67a9cf;
-    stroke: #fff;
-}
-
-circle.loss {
     fill: #ef8a62;
     stroke: #fff;
 }
@@ -157,15 +159,15 @@ circle.loss {
     stroke-width: 2;
 }
 
-.probe{
-  position: absolute;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  display: none;
-  font-size: 12px;
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.25);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.25);
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.25);
+.probe {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    font-size: 12px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
 }

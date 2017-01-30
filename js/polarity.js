@@ -3,98 +3,212 @@ var format = d3.format(",");
 var sliderMargin = 65;
 
 function circleSize(d) {
-    return Math.abs(d) * 30;
+    return Math.abs(d) * 0.0005;
 }
 
 function generate_swiss_projection(width, heigth) {
     return d3.geo.albers()
         .rotate([0, 0])
-        .center([8.22, 46.83])
-        .scale(12000)
+        .center([8.42, 46.83])
+        .scale(15000)
         .translate([width / 2, heigth / 2])
         .precision(.1);
 }
 
 
+var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    months_full = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 var type_format_mappers = {
-    "season": function (column) {
-        //generates Date object out of that column string
-        // like "winter1_Polarity"
-        var year_list = [2012, 2013, 2014, 2015];
+    "season": (function () {
+        var year_list = [2012, 2013, 2014, 2015, 2016];
         var season_map = {
             "winter": 0,
             "spring": 3,
             "summer": 6,
             "fall": 9
         }
-        season_tag = column.split("_")[0];
-        month_integer = season_map[season_tag.substring(0, season_tag.length - 1)];
-        year_integer = column[parseInt(season_tag.substr(season_tag.length - 1))];
-        return new Date(year_integer, month_integer);
-    }
+
+        var get_month_year = function (column) {
+            var season_tag = column.split("_")[0];
+            var month_integer = season_map[season_tag.substring(0, season_tag.length - 1)];
+            var year_integer = year_list[parseInt(season_tag.substr(season_tag.length - 1)) - 1];
+            return [year_integer, month_integer];
+        }
+        var parser = function (column) {
+            //generates Date object out of that column string
+            // like "winter1_Polarity"
+            var integers = get_month_year(column);
+            return new Date(integers[0], integers[1]);
+        };
+
+        var printer = function (column) {
+            var integers = get_month_year(column);
+            return months[integers[1]] + " " + integers[0];
+        }
+
+        return {
+            "parser": parser,
+            "printer": printer
+        }
+    })()
+}
+
+var draw_line_chart = function (values, target) {
+    var parseDate = d3.time.format("%d-%b-%y").parse;
+
+// Set the ranges
+    var x = d3.time.scale().range([0, width]);
+    var y = d3.scale.linear().range([height, 0]);
+
+// Define the axes
+    var xAxis = d3.svg.axis().scale(x)
+        .orient("bottom").ticks(5);
+
+    var yAxis = d3.svg.axis().scale(y)
+        .orient("left").ticks(5);
+
+// Define the line
+    var valueline = d3.svg.line()
+        .x(function (d) {
+            return x(d.date);
+        })
+        .y(function (d) {
+            return y(d.close);
+        });
+
+// Adds the svg canvas
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    data.forEach(function (d) {
+        d.date = parseDate(d.date);
+        d.close = +d.close;
+    });
+
+    // Scale the range of the data
+    x.domain(d3.extent(data, function (d) {
+        return d.date;
+    }));
+    y.domain([0, d3.max(data, function (d) {
+        return d.close;
+    })]);
+
+    // Add the valueline path.
+    svg.append("path")
+        .attr("class", "line")
+        .attr("d", valueline(data));
+
+    // Add the X Axis
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
 }
 
 var map_populator_callback = function (_container_id, _width, _height, map, path, probe, canton_id_to_geometry, svg, g, data_source) {
 
-    var hoverData, dateScale, sliderScale, slider;
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        months_full = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-        orderedColumns = [],
+    var VALUES_CSV = data_source.data[0];
+    var COUNT_CSV = data_source.data[1];
+
+    var hoverData, dateScale, slider;
+    var orderedColumns = [],
         currentFrame = 0,
         interval,
         frameLength = 500,
         isPlaying = false;
 
-    var column_to_date = type_format_mappers[data_source.type];
+    var column_to_date = type_format_mappers[data_source.type].parser;
+    var column_printer = type_format_mappers[data_source.type].printer;
 
 
     var createScale = function (columns) {
         var start = column_to_date(columns[0]),
             end = column_to_date(columns[columns.length - 1]);
-        return d3.time.scale()
-            .domain([start, end]);
+        return d3.time.scale().domain([start, end]);
     }
 
 
     var setProbeContent = function (d) {
-        var val = d[orderedColumns[currentFrame]],
-            month = months_full[m_y[0]];
-        var html = "<strong>" + d.canton || d.Canton + "</strong><br/>" +
-            format(Math.abs(val)) + " mood level <br/>" +
-            "<span>" + orderedColumns[currentFrame] + "</span>";
-        probe
-            .html(html);
+        var val = d[orderedColumns[currentFrame]];
+        var html = "<strong>" + (d.canton || d.Canton) + "</strong><br/>Mood level " +
+            format(Math.abs(val)) + "<br/><span>" + column_printer(orderedColumns[currentFrame]) + "</span>";
+        probe.html(html);
     }
 
+    var getColor = function (valueIn, valuesIn) {
 
-    var drawFrame = function (m, tween) {
+        var color = d3.scale.linear() // create a linear scale
+            .domain([valuesIn[0], valuesIn[1]])  // input uses min and max values
+            .range([0.1, 1]);   // output for opacity between .3 and 1 %
+
+        return color(valueIn);  // return that number to the caller
+    }
+
+    var drawFrame = function (raw_column_string, tween) {
         var circle = map.selectAll("circle")
-            .attr("class", function (d) {
-                return d[m] > 0 ? "gain" : "loss";
-            })
+        /*.attr("class", function (d) {
+         return d[raw_column_string] > 0 ? "gain" : "loss";
+         })*/
         if (tween) {
             circle
                 .transition()
                 .ease("linear")
                 .duration(frameLength)
                 .attr("r", function (d) {
-                    return circleSize(d[m])
+                    if (canton_to_count_map) {
+                        var count = canton_to_count_map[d.canton][raw_column_string];
+                        return circleSize(count);
+                    }
+                    return 0;
                 });
         } else {
             circle.attr("r", function (d) {
-                return circleSize(d[m])
+                if (canton_to_count_map) {
+                    var count = canton_to_count_map[d.canton][raw_column_string];
+                    return circleSize(count);
+                }
+                return 0;
             });
         }
 
-        d3.select(_container_id + " .date p.month").html(m);
+        d3.select(_container_id + " .date p.month").html(column_printer(raw_column_string));
 
         if (hoverData) {
             setProbeContent(hoverData);
         }
+
+
+        //var dataRange = getDataRange(); // get the min/max values from the current year's range of data values
+        map.selectAll('.canton').transition()  //select all the cantons and prepare for a transition to new values
+            .duration(100)  // give it a smooth time period for the transition
+            .attr('fill-opacity', function (d) {
+                var val = canton_to_data_map[d.id][raw_column_string];
+
+                var transparency = getColor(Math.abs(val), [0, 1]);
+                return transparency;// the end color value
+            })
+            .attr('fill', function (d) {
+                var val = canton_to_data_map[d.id][raw_column_string];
+                if (val > 0)
+                    return "steelblue"
+                else
+                    return "red"
+            });
     }
 
 
-    function animate() {
+    var animate = function () {
         interval = setInterval(function () {
             currentFrame++;
 
@@ -116,7 +230,7 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
         }, frameLength);
     }
 
-    function sliderProbe() {
+    var sliderProbe = function () {
         var d = dateScale.invert((d3.mouse(this)[0]));
         d3.select(_container_id + " .slider-probe")
             .style("left", d3.mouse(this)[0] + sliderMargin + "px")
@@ -127,8 +241,7 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
 
     var createSlider = function () {
 
-        sliderScale = d3.scale.linear().domain([0, orderedColumns.length - 1]);
-
+        var sliderScale = d3.scale.linear().domain([0, orderedColumns.length - 1]);
         var val = slider ? slider.value() : 0;
 
         slider = d3.slider()
@@ -172,8 +285,6 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
         var sliderAxis = d3.svg.axis()
             .scale(dateScale)
             .tickValues(dateScale.ticks(orderedColumns.length).filter(function (d, i) {
-                console.log(d, i)
-                //console.log(orderedColumns)
                 // ticks only for beginning of each year, plus first and last
                 return d.getMonth() == 0 || i == 0 || (i == orderedColumns.length - 1) || d.getMonth() % 6 == 0;
                 //return true;
@@ -204,19 +315,28 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
         var w = d3.select(_container_id + " .main-container").node().offsetWidth,
             h = window.innerHeight - 80;
         var scale = Math.max(1, Math.min(w / _width, h / _height));
-        svg
-            .attr("width", _width * scale)
-            .attr("height", _height * scale);
-        g.attr("transform", "scale(" + scale + "," + scale + ")");
+        //console.log(w, _width)
+        // console.log(h, _height);
+        /*svg
+         .attr("width", _width * scale)
+         .attr("height", _height * scale);
+         g.attr("transform", "scale(" + scale + "," + scale + ")");
 
-        d3.select(_container_id + " .map-container").style("width", _width * scale + "px");
-
+         d3.select(_container_id + " .map-container").style("width", _width * scale + "px");
+         */
         dateScale.range([0, 500 + w - _width]);
 
         createSlider();
     }
 
+    var canton_to_data_map = null;
+    var canton_to_count_map = null;
+
+
     var cb = function (data) {
+
+        canton_to_data_map = {};
+
 
         var first = data[0];
         // get columns
@@ -229,8 +349,9 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
         // draw city points
         for (var i in data) {
 
+            canton_to_data_map[data[i].canton || data[i].Canton] = data[i];
+
             var related_geometry = canton_id_to_geometry[data[i].canton || data[i].Canton];
-            console.log("Processing", related_geometry.id);
             var projected = path.centroid(related_geometry);
             //var projected = projection([parseFloat(data[i].LON), parseFloat(data[i].LAT)])
             map.append("circle")
@@ -239,30 +360,33 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
                 .attr("cy", projected[1])
                 .attr("r", 1)
                 .attr("vector-effect", "non-scaling-stroke")
-                .on("mousemove", function (d) {
-                    hoverData = d;
-                    setProbeContent(d);
-                    probe
-                        .style({
-                            "display": "block",
-                            "top": (d3.event.pageY - 10) + "px",
-                            "left": (d3.event.pageX - 250) + "px"
-                        })
-                })
-                .on("mouseout", function () {
-                    hoverData = null;
-                    probe.style("display", "none");
-                })
-                .on("click", function (d) {
-                    console.log(d);
-                })
         }
+
+        map.selectAll('.canton')
+            .on("mousemove", function (d) {
+                var canton_data = canton_to_data_map[d.id];
+                hoverData = canton_data;
+                setProbeContent(canton_data);
+                probe
+                    .style({
+                        "display": "block",
+                        "top": (d3.event.pageY + 30) + "px",
+                        "left": (d3.event.pageX + 30) + "px"
+                    })
+            })
+            .on("mouseout", function () {
+                hoverData = null;
+                probe.style("display", "none");
+            })
+            .on("click", function (d) {
+                console.log(d);
+            })
 
         //createLegend();
 
         dateScale = createScale(orderedColumns).range([0, 500]);
 
-        createSlider();
+        //createSlider();
 
         d3.select(_container_id + " .play")
             .attr("title", "Play animation")
@@ -284,13 +408,19 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
 
     }
 
-    d3.csv(data_source.url, function (data) {
+    d3.csv(VALUES_CSV, function (data) {
         cb(data);
+    });
+
+    d3.csv(COUNT_CSV, function (data) {
+        canton_to_count_map = {};
+        for (var i in data) {
+            canton_to_count_map[data[i].canton || data[i].Canton] = data[i];
+        }
     });
 }
 
 function generate_map(data_source, container_id, width, height, cb) {
-    var map_container_selector = container_id + " .map-container";
     var play_selector = container_id + " .play";
     var date_selector = container_id + " .date";
 
@@ -299,7 +429,7 @@ function generate_map(data_source, container_id, width, height, cb) {
     var path = d3.geo.path()
         .projection(projection);
 
-    var svg = d3.select(map_container_selector).append("svg")
+    var svg = d3.select(container_id + " .map-container").append("svg")
         .attr("width", width)
         .attr("height", height);
 
@@ -332,8 +462,9 @@ function generate_map(data_source, container_id, width, height, cb) {
             .enter()
             .append("path")
             .attr("vector-effect", "non-scaling-stroke")
-            .attr("class", "land")
+            .attr("class", "canton")
             .attr("d", path);
+
 
         map.append("path")
             .datum(topojson.mesh(canton_topoJson, canton_topoJson.objects.cantons, function (a, b) {
@@ -343,7 +474,8 @@ function generate_map(data_source, container_id, width, height, cb) {
             .attr("vector-effect", "non-scaling-stroke")
             .attr("d", path);
 
-        probe = d3.select(map_container_selector).append("div")
+        probe = d3.select('body').append("div")
+            .attr("id", container_id.substr(1) + "-probe")
             .attr("class", "probe");
 
         as_geojson.forEach(function (canton_geo) {

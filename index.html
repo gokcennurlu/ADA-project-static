@@ -78,17 +78,17 @@
                 Navigation
             </h2>
             <ul class="list-unstyled">
-                <li class="navigation-item">
+                <li class="menu-item navigation-item">
                     <a href="#" onclick="$.fn.fullpage.moveTo(1);return false;">Introduction</a>
                 </li>
-                <li class="navigation-item">
-                    <a href="#" onclick="$.fn.fullpage.moveTo(2);return false;">Simple Approach</a>
+                <li class="menu-item">
+                    <a href="#" onclick="return false;">Simple Approach</a>
                 </li>
-                <li class="navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(3);return false;">Sentiment Analysis</a>
+                <li class="menu-item navigation-item">
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(2);return false;">Sentiment Analysis</a>
                 </li>
-                <li class="navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(4);return false;">Emotion Analysis</a>
+                <li class="menu-item navigation-item">
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(3);return false;">Emotion Analysis</a>
                 </li>
                 <!--li class="navigation-item">
                     <a href="#" onclick="$.fn.fullpage.moveTo(3);return false;">Map2</a>
@@ -146,7 +146,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="map-container"></div>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="map-container"></div>
+                        </div>
+                        <div class="col-xs-4">
+                            LALALA
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="section">
@@ -213,14 +220,16 @@
         });
 
         var first_approach_map_types = {
-            "season": "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/Season/polarity_avg_season.csv"
-        };
+            "season": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/Season/polarity_avg_season.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/Season/polarity_count_season.csv"
+                ],
+                type: "season"
+            }
+        }
         //$(first_approach_container_id + " select").on('change', function () {
-        var first_approach_map = generate_map(
-            {
-                "url": "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/Season/polarity_avg_season.csv",
-                "type": "season"
-            }, "#first-section-contents", 960, 450, map_populator_callback);
+        var first_approach_map = generate_map(first_approach_map_types["season"], "#first-section-contents", 900, 750, map_populator_callback);
         //})
     });
 </script>

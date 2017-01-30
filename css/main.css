@@ -22,6 +22,11 @@
     box-shadow: 4px 0px 20px -3px rgba(161, 161, 161, 0.64);
 }
 
+.padded{
+    padding-left: 25px;
+    font-size: 24px;
+}
+
 /**map related **/
 
 .date, .play, .slider-container{
@@ -33,7 +38,7 @@
 .date{
   border-left: 5px solid #ccc;
   padding: 3px 0 3px 10px;
-  margin-left: 60px;
+  margin-left: 5px;
   color: #333;
 }
 .date p{
@@ -45,7 +50,7 @@
   line-height: 13px;
 }
 .date p.month{
-  font-size: 20px;
+  font-size: 15px;
   line-height: 30px;
 }
 .date p.month span{
@@ -58,7 +63,7 @@
   height: 53px;
   background-image: url(../img/play.png);
   border-radius: 5px;
-  margin-left: 20px;
+  margin-left: 5px;
   cursor: pointer;
 }
 

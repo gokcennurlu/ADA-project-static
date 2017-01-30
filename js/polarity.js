@@ -3,37 +3,38 @@ var format = d3.format(",");
 var sliderMargin = 65;
 
 function circleSize(d) {
-    return Math.sqrt(Math.abs(d));
+    return Math.abs(d) * 30;
 }
 
 function generate_swiss_projection(width, heigth) {
     return d3.geo.albers()
         .rotate([0, 0])
         .center([8.22, 46.83])
-        .scale(16000)
+        .scale(12000)
         .translate([width / 2, heigth / 2])
         .precision(.1);
 }
 
-//Polarity map specific values
-var polarity_width = 960,
-    polarity_height = 600;
 
-var polarity_container_id = "#first-section-contents";
+var type_format_mappers = {
+    "season": function (column) {
+        //generates Date object out of that column string
+        // like "winter1_Polarity"
+        var year_list = [2012, 2013, 2014, 2015];
+        var season_map = {
+            "winter": 0,
+            "spring": 3,
+            "summer": 6,
+            "fall": 9
+        }
+        season_tag = column.split("_")[0];
+        month_integer = season_map[season_tag.substring(0, season_tag.length - 1)];
+        year_integer = column[parseInt(season_tag.substr(season_tag.length - 1))];
+        return new Date(year_integer, month_integer);
+    }
+}
 
-var score_mapping = {
-    'joy': 120,
-    'trust': 100,
-    'anticipation': 90,
-    'surprise': 80,
-    'fear': 10,
-    'anger': 0,
-    'sadness': -10,
-    'disgust': -20
-};
-
-var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, g) {
-
+var map_populator_callback = function (_container_id, _width, _height, map, path, probe, canton_id_to_geometry, svg, g, data_source) {
 
     var hoverData, dateScale, sliderScale, slider;
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -44,40 +45,32 @@ var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, 
         frameLength = 500,
         isPlaying = false;
 
-    var getMonthYear = function (column) {
-        var m_y = column.split("-")[1].split("/");
-        return [parseInt(m_y[0]), parseInt(m_y[1])];
-    }
+    var column_to_date = type_format_mappers[data_source.type];
 
-    var monthLabel = function (m) {
-        var month_string = months_full[getMonthYear(m)[0] - 1];
-        return "<span>" + month_string + "</span> " + getMonthYear(m)[1];
-    }
 
-    var createDateScale = function (columns) {
-        var start = getMonthYear(columns[0]),
-            end = getMonthYear(columns[columns.length - 1]);
+    var createScale = function (columns) {
+        var start = column_to_date(columns[0]),
+            end = column_to_date(columns[columns.length - 1]);
         return d3.time.scale()
-            .domain([new Date(start[1], start[0]), new Date(end[1], end[0])]);
+            .domain([start, end]);
     }
 
 
-    function setProbeContent(d) {
-        var val = score_mapping[d[orderedColumns[currentFrame]]],
-            m_y = getMonthYear(orderedColumns[currentFrame]),
+    var setProbeContent = function (d) {
+        var val = d[orderedColumns[currentFrame]],
             month = months_full[m_y[0]];
-        var html = "<strong>" + d.Canton + "</strong><br/>" +
+        var html = "<strong>" + d.canton || d.Canton + "</strong><br/>" +
             format(Math.abs(val)) + " mood level <br/>" +
-            "<span>" + month + " " + m_y[1] + "</span>";
+            "<span>" + orderedColumns[currentFrame] + "</span>";
         probe
             .html(html);
     }
 
 
-    var drawMonth = function (m, tween) {
+    var drawFrame = function (m, tween) {
         var circle = map.selectAll("circle")
             .attr("class", function (d) {
-                return score_mapping[d[m]] > 0 ? "gain" : "loss";
+                return d[m] > 0 ? "gain" : "loss";
             })
         if (tween) {
             circle
@@ -85,15 +78,15 @@ var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, 
                 .ease("linear")
                 .duration(frameLength)
                 .attr("r", function (d) {
-                    return circleSize(score_mapping[d[m]])
+                    return circleSize(d[m])
                 });
         } else {
             circle.attr("r", function (d) {
-                return circleSize(score_mapping[d[m]])
+                return circleSize(d[m])
             });
         }
 
-        d3.select(polarity_container_id + " .date p.month").html(monthLabel(m));
+        d3.select(_container_id + " .date p.month").html(m);
 
         if (hoverData) {
             setProbeContent(hoverData);
@@ -107,15 +100,15 @@ var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, 
 
             if (currentFrame == orderedColumns.length) currentFrame = 0;
 
-            d3.select(polarity_container_id + " .slider-div .d3-slider-handle")
+            d3.select(_container_id + " .slider-div .d3-slider-handle")
                 .style("left", 100 * currentFrame / orderedColumns.length + "%");
             slider.value(currentFrame)
 
-            drawMonth(orderedColumns[currentFrame], true);
+            drawFrame(orderedColumns[currentFrame], true);
 
             if (currentFrame == orderedColumns.length - 1) {
                 isPlaying = false;
-                d3.select(polarity_container_id + " .play").classed("pause", false).attr("title", "Play animation");
+                d3.select(_container_id + " .play").classed("pause", false).attr("title", "Play animation");
                 clearInterval(interval);
                 return;
             }
@@ -125,7 +118,7 @@ var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, 
 
     function sliderProbe() {
         var d = dateScale.invert((d3.mouse(this)[0]));
-        d3.select(polarity_container_id + " .slider-probe")
+        d3.select(_container_id + " .slider-probe")
             .style("left", d3.mouse(this)[0] + sliderMargin + "px")
             .style("display", "block")
             .select("p")
@@ -149,30 +142,30 @@ var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, 
                     currentFrame = new_value;
                     console.log("Updated!", currentFrame)
                 }
-                drawMonth(orderedColumns[currentFrame], d3.event.type != "drag");
+                drawFrame(orderedColumns[currentFrame], d3.event.type != "drag");
             })
             .on("slideend", function () {
                 if (isPlaying) animate();
-                d3.select(polarity_container_id + " .slider-div").on("mousemove", sliderProbe)
+                d3.select(_container_id + " .slider-div").on("mousemove", sliderProbe)
             })
             /*.on("slidestart", function () {
              d3.select("#slider-div").on("mousemove", null)
              })*/
             .value(val);
 
-        d3.select(polarity_container_id + " .slider-div").remove();
+        d3.select(_container_id + " .slider-div").remove();
 
-        d3.select(polarity_container_id + " .slider-container")
+        d3.select(_container_id + " .slider-container")
             .append("div")
             .attr("class", "slider-div")
             .style("width", dateScale.range()[1] + "px")
             .on("mousemove", sliderProbe)
             .on("mouseout", function () {
-                d3.select(polarity_container_id + " .slider-probe").style("display", "none");
+                d3.select(_container_id + " .slider-probe").style("display", "none");
             })
             .call(slider);
 
-        d3.select(polarity_container_id + " .slider-div a").on("mousemove", function () {
+        d3.select(_container_id + " .slider-div a").on("mousemove", function () {
             d3.event.stopPropagation();
         })
 
@@ -192,9 +185,9 @@ var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, 
             })
         //.tickSize(10)
 
-        d3.select(polarity_container_id + " .axis").remove();
+        d3.select(_container_id + " .axis").remove();
 
-        d3.select(polarity_container_id + " .slider-container")
+        d3.select(_container_id + " .slider-container")
             .append("svg")
             .attr("class", "axis")
             .attr("width", dateScale.range()[1] + sliderMargin * 2)
@@ -203,33 +196,32 @@ var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, 
             .attr("transform", "translate(" + (sliderMargin + 1) + ",0)")
             .call(sliderAxis);
 
-        d3.select(polarity_container_id + " .axis > g g:first-child text").attr("text-anchor", "end").style("text-anchor", "end");
-        d3.select(polarity_container_id + " .axis > g g:last-of-type text").attr("text-anchor", "start").style("text-anchor", "start");
+        d3.select(_container_id + " .axis > g g:first-child text").attr("text-anchor", "end").style("text-anchor", "end");
+        d3.select(_container_id + " .axis > g g:last-of-type text").attr("text-anchor", "start").style("text-anchor", "start");
     }
 
-    function resize() {
-        var w = d3.select(polarity_container_id + " .main-container").node().offsetWidth,
+    var resize = function () {
+        var w = d3.select(_container_id + " .main-container").node().offsetWidth,
             h = window.innerHeight - 80;
-        var scale = Math.max(1, Math.min(w / polarity_width, h / polarity_height));
+        var scale = Math.max(1, Math.min(w / _width, h / _height));
         svg
-            .attr("width", polarity_width * scale)
-            .attr("height", polarity_height * scale);
+            .attr("width", _width * scale)
+            .attr("height", _height * scale);
         g.attr("transform", "scale(" + scale + "," + scale + ")");
 
-        d3.select(polarity_container_id + " .map-container").style("width", polarity_width * scale + "px");
+        d3.select(_container_id + " .map-container").style("width", _width * scale + "px");
 
-        dateScale.range([0, 500 + w - polarity_width]);
+        dateScale.range([0, 500 + w - _width]);
 
         createSlider();
     }
-
 
     var cb = function (data) {
 
         var first = data[0];
         // get columns
         for (var mug in first) {
-            if (mug != "Canton") {
+            if (mug.toLowerCase() != "canton") {
                 orderedColumns.push(mug);
             }
         }
@@ -237,7 +229,7 @@ var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, 
         // draw city points
         for (var i in data) {
 
-            var related_geometry = canton_id_to_geometry[data[i].Canton];
+            var related_geometry = canton_id_to_geometry[data[i].canton || data[i].Canton];
             console.log("Processing", related_geometry.id);
             var projected = path.centroid(related_geometry);
             //var projected = projection([parseFloat(data[i].LON), parseFloat(data[i].LAT)])
@@ -261,18 +253,18 @@ var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, 
                     hoverData = null;
                     probe.style("display", "none");
                 })
-                .on("click" ,function (d) {
+                .on("click", function (d) {
                     console.log(d);
                 })
         }
 
         //createLegend();
 
-        dateScale = createDateScale(orderedColumns).range([0, 500]);
+        dateScale = createScale(orderedColumns).range([0, 500]);
 
         createSlider();
 
-        d3.select(polarity_container_id + " .play")
+        d3.select(_container_id + " .play")
             .attr("title", "Play animation")
             .on("click", function () {
                 if (!isPlaying) {
@@ -286,20 +278,18 @@ var polarity_callback = function (map, path, probe, canton_id_to_geometry, svg, 
                 }
             });
 
-        drawMonth(orderedColumns[currentFrame]); // initial map
+        drawFrame(orderedColumns[currentFrame]); // initial map
         //window.onresize = resize;
         resize();
 
     }
 
-    return cb;
+    d3.csv(data_source.url, function (data) {
+        cb(data);
+    });
 }
 
-
-function generate_map(container_id, width, height, cb) {
-    var map_id = container_id + "_map";
-    var probe_id = container_id + "_probe";
-
+function generate_map(data_source, container_id, width, height, cb) {
     var map_container_selector = container_id + " .map-container";
     var play_selector = container_id + " .play";
     var date_selector = container_id + " .date";
@@ -360,12 +350,20 @@ function generate_map(container_id, width, height, cb) {
             canton_id_to_geometry[canton_geo.id] = canton_geo;
         });
 
-        d3.csv("https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Results/RandomResults4Viz.csv", function (data) {
-            console.log("CSV downloaded");
-            cb(map, path, probe, canton_id_to_geometry, svg, g)(data);
-        });
-
+        cb(container_id, width, height, map, path, probe, canton_id_to_geometry, svg, g, data_source); //initial loading
     });
+
+    return {
+        "container_id": container_id,
+        "width": width,
+        "height": height,
+        "map": map,
+        "path": path,
+        "probe": probe,
+        "canton_id_geometry": canton_id_to_geometry,
+        "svg": svg,
+        "g": g
+    }
 }
 
 

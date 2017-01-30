@@ -12,167 +12,176 @@
 
 
     <title>ADA Final project index</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" integrity="sha384-Li5uVfY2bSkD3WQyiHX8tJd0aMF91rMrQP5aAewFkHkVSTT2TmD2PehZeMmm7aiL"
-        crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Li5uVfY2bSkD3WQyiHX8tJd0aMF91rMrQP5aAewFkHkVSTT2TmD2PehZeMmm7aiL"
+          crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.2/jquery.fullPage.min.css" integrity="sha256-hV3yBsdy+kVOfeF1fwdxgGQkwQ4WynnzyeDkGA7k+Kg="
-        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.2/jquery.fullPage.min.css"
+          integrity="sha256-hV3yBsdy+kVOfeF1fwdxgGQkwQ4WynnzyeDkGA7k+Kg="
+          crossorigin="anonymous"/>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.2/jquery.fullPage.min.js" integrity="sha256-8ulYzAzPmfXhHcaMz/vfG0+xkkdASvmBGMArBaMHBgo="
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.2/jquery.fullPage.min.js"
+            integrity="sha256-8ulYzAzPmfXhHcaMz/vfG0+xkkdASvmBGMArBaMHBgo="
+            crossorigin="anonymous"></script>
 
-    <style>
-        .scrollable {
-            height: 100vh;
-            /*position: fixed;*/
-            overflow-y: scroll;
-        }
-        
-        .navigation-item {
-            font-size: 28px;
-            padding: 15px;
-            font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
-        
-        .navigation-item.active {
-            background-color: #d9d9d9;
-        }
-        
-        .bg-pattern {
-            background: linear-gradient(-45deg, rgba(0, 0, 0, 0) 25%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 75%, rgba(255, 255, 255, 0.2) 75%), linear-gradient(45deg, rgba(0, 0, 0, 0) 25%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 75%, rgba(255, 255, 255, 0.2) 75%), rgba(237, 237, 237, 1);
-            background-size: 100px 100px;
-            -webkit-box-shadow: 4px 0px 20px -3px rgba(161, 161, 161, 0.64);
-            -moz-box-shadow: 4px 0px 20px -3px rgba(161, 161, 161, 0.64);
-            box-shadow: 4px 0px 20px -3px rgba(161, 161, 161, 0.64);
-        }
-    </style>
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <script src="https://d3js.org/topojson.v1.min.js"></script>
+    <script src="js/d3.slider.js"></script>
+
+    <script src="js/polarity.js"></script>
+
+    <link rel="stylesheet" href="css/d3.slider.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-2 bg-pattern" style="padding: 0; height:100vh;">
-                <h1 class="text-center">
-                    ADA Project
-                </h1>
-                <ul class="list-unstyled text-center">
-                    <li>
-                        Members (alphabetical)
-                    </li>
-                    <li>
-                        <strong>Gökçen Nurlu</strong>
-                    </li>
-                    <li>
-                        <strong>Meryem M'hamdi</strong>
-                    </li>
-                    <li>
-                        <strong>Riyadh Abdulaziz M Alnasser</strong>
-                    </li>
-                </ul>
-                <br>
-                <br>
-                <br>
-                <h2 class="text-center">
-                    Navigation
-                </h2>
-                <ul class="list-unstyled">
-                    <li class="navigation-item">
-                        <a href="#" onclick="$.fn.fullpage.moveTo(1);return false;">Introduction</a>
-                    </li>
-                    <li class="navigation-item">
-                        <a href="#" onclick="$.fn.fullpage.moveTo(2);return false;">Map1</a>
-                    </li>
-                    <li class="navigation-item">
-                        <a href="#" onclick="$.fn.fullpage.moveTo(3);return false;">Map2</a>
-                    </li>
-                    <li class="navigation-item">
-                        <a href="#" onclick="$.fn.fullpage.moveTo(4);return false;">Map3</a>
-                    </li>
-                </ul>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2 bg-pattern" style="padding: 0; height:100vh;">
+            <h1 class="text-center">
+                ADA Project
+            </h1>
+            <ul class="list-unstyled text-center">
+                <li>
+                    Members (alphabetical)
+                </li>
+                <li>
+                    <strong>Gökçen Nurlu</strong>
+                </li>
+                <li>
+                    <strong>Meryem M'hamdi</strong>
+                </li>
+                <li>
+                    <strong>Riyadh Abdulaziz M Alnasser</strong>
+                </li>
+            </ul>
+            <br>
+            <br>
+            <br>
+            <h2 class="text-center">
+                Navigation
+            </h2>
+            <ul class="list-unstyled">
+                <li class="navigation-item">
+                    <a href="#" onclick="$.fn.fullpage.moveTo(1);return false;">Introduction</a>
+                </li>
+                <li class="navigation-item">
+                    <a href="#" onclick="$.fn.fullpage.moveTo(2);return false;">Map1</a>
+                </li>
+                <li class="navigation-item">
+                    <a href="#" onclick="$.fn.fullpage.moveTo(3);return false;">Map2</a>
+                </li>
+                <li class="navigation-item">
+                    <a href="#" onclick="$.fn.fullpage.moveTo(4);return false;">Map3</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-10" id="fullpage">
+            <div class="section">
+                <h1>Rationale</h1>
+                <p class="lead">
+                    The increasing availability of geolocated data in social media opened new ventures in the
+                    exploration and understanding of spatio-temporal movements patterns and possibilities to explain
+                    such irregularities in the mobility data. Twitter offers both individual and crowd-based geotagged
+                    data at different levels of precision.
+
+                    The main objective of this project is to understand what triggers mobility in Switzerland by
+                    testimating how emotions of users change from one canton to another based on spatio-temporal data.
+                    We have followed fine-grained emotion recognition methodology and developped a platform for
+                    visualizing happiness in the swiss cantons to provide users and the general public with an
+                    interactive interface for mood pattern exploration using multiple time, space and user dimensions.
+                </p>
+                <h1>Methodology</h1>
+                <p class="lead">
+                    We made use of dataset of 10M (?) geolocated tweets collected in the area of Switzerland. After
+                    removing duplicates, dealing with nulls, parsing and other data treatment, we assign each tweet to
+                    its corresponding canton based geolocation information. We then chunk the dataset based on the
+                    language detected. We have followed a hybrid methodology which combines rule based and learning
+                    based to strengthen traditional lexicon spotting.
+                </p>
             </div>
-            <div class="col-sm-10" id="fullpage">
-                <div class="section">
-                    <h1>
-                        Hello!
-                    </h1>
-                    <p class="lead">
-                        Donec ut tincidunt erat. Aliquam in dolor eu libero pellentesque cursus. Nam blandit diam eget auctor pellentesque. Aliquam
-                        sed purus nec sapien semper molestie tincidunt quis est. Aliquam a lobortis urna, id semper leo.
-                        Maecenas ac quam ac nisl commodo mattis blandit non neque. Vivamus pulvinar, nisl sed ornare ultricies,
-                        neque arcu dictum nisl, vitae dignissim velit nisl ut urna. Sed vel egestas tellus. Etiam et venenatis
-                        enim. Aenean laoreet pretium libero, sit amet pharetra odio aliquam a. Donec mollis nisi purus, eget
-                        feugiat ante elementum in. Nam placerat erat interdum, pharetra risus fermentum, ultricies ante.
-                        Sed congue nisl nec erat pretium dignissim non dapibus orci. Nullam quis congue lacus, sit amet posuere
-                        ex.
-                    </p>
+            <div class="section" id="first-section-contents">
+                <div class="main-container">
+                    <div class="date">
+                        <p class="month"></p>
+                    </div>
+                    <div class="play"></div>
+                    <div class="slider-container">
+                        <div class="slider-div"></div>
+                        <div class="slider-probe">
+                            <p></p>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="map-container"></div>
                 </div>
-                <div class="section">
-                    <h1>
-                        A wild map shall appear here (⌐■_■)
-                    </h1>
-                </div>
-                <div class="section">
-                    <h1>
-                        Une carte sauvage doit apparaître ici (̿▀̿ ̿Ĺ̯̿̿▀̿ ̿)̄
-                    </h1>
-                </div>
-                <div class="section">
-                    <h1>
-                        Burada çılgın bir harita yer alacak
-                    </h1>
-                    <h2>
-                        ░░░░░░░░░▄░░░░░░░░░░░░░░▄<br> ░░░░░░░░▌▒█░░░░░░░░░░░▄▀▒▌
-                        <br> ░░░░░░░░▌▒▒█░░░░░░░░▄▀▒▒▒▐
-                        <br> ░░░░░░░▐▄▀▒▒▀▀▀▀▄▄▄▀▒▒▒▒▒▐
-                        <br> ░░░░░▄▄▀▒░▒▒▒▒▒▒▒▒▒█▒▒▄█▒▐
-                        <br> ░░░▄▀▒▒▒░░░▒▒▒░░░▒▒▒▀██▀▒▌
-                        <br> ░░▐▒▒▒▄▄▒▒▒▒░░░▒▒▒▒▒▒▒▀▄▒▒▌
-                        <br> ░░▌░░▌█▀▒▒▒▒▒▄▀█▄▒▒▒▒▒▒▒█▒▐
-                        <br> ░▐░░░▒▒▒▒▒▒▒▒▌██▀▒▒░░░▒▒▒▀▄▌
-                        <br> ░▌░▒▄██▄▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▌
-                        <br> ▌▒▀▐▄█▄█▌▄░▀▒▒░░░░░░░░░░▒▒▒▐
-                        <br> ▐▒▒▐▀▐▀▒░▄▄▒▄▒▒▒▒▒▒░▒░▒░▒▒▒▒▌
-                        <br> ▐▒▒▒▀▀▄▄▒▒▒▄▒▒▒▒▒▒▒▒░▒░▒░▒▒▐
-                        <br> ░▌▒▒▒▒▒▒▀▀▀▒▒▒▒▒▒░▒░▒░▒░▒▒▒▌
-                        <br> ░▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▒▄▒▒▐
-                        <br> ░░▀▄▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▄▒▒▒▒▌
-                        <br> ░░░░▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀
-                        <br> ░░░░░░▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
-                        <br> ░░░░░░░░░▒▒▒▒▒▒▒▒▒▒▀▀
-                        <br>
-                    </h2>
-                </div>
-                <div class="section">
-                    <p>
-                        3
-                    </p>
-                </div>
-                <div class="section">
-                    <p>
-                        3
-                    </p>
-                </div>
+            </div>
+            <div class="section">
+                <h1>
+                    Une carte sauvage doit apparaître ici (̿▀̿ ̿Ĺ̯̿̿▀̿ ̿)̄
+                </h1>
+            </div>
+            <div class="section">
+                <h1>
+                    Burada çılgın bir harita yer alacak
+                </h1>
+                <h2>
+                    ░░░░░░░░░▄░░░░░░░░░░░░░░▄<br> ░░░░░░░░▌▒█░░░░░░░░░░░▄▀▒▌
+                    <br> ░░░░░░░░▌▒▒█░░░░░░░░▄▀▒▒▒▐
+                    <br> ░░░░░░░▐▄▀▒▒▀▀▀▀▄▄▄▀▒▒▒▒▒▐
+                    <br> ░░░░░▄▄▀▒░▒▒▒▒▒▒▒▒▒█▒▒▄█▒▐
+                    <br> ░░░▄▀▒▒▒░░░▒▒▒░░░▒▒▒▀██▀▒▌
+                    <br> ░░▐▒▒▒▄▄▒▒▒▒░░░▒▒▒▒▒▒▒▀▄▒▒▌
+                    <br> ░░▌░░▌█▀▒▒▒▒▒▄▀█▄▒▒▒▒▒▒▒█▒▐
+                    <br> ░▐░░░▒▒▒▒▒▒▒▒▌██▀▒▒░░░▒▒▒▀▄▌
+                    <br> ░▌░▒▄██▄▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▌
+                    <br> ▌▒▀▐▄█▄█▌▄░▀▒▒░░░░░░░░░░▒▒▒▐
+                    <br> ▐▒▒▐▀▐▀▒░▄▄▒▄▒▒▒▒▒▒░▒░▒░▒▒▒▒▌
+                    <br> ▐▒▒▒▀▀▄▄▒▒▒▄▒▒▒▒▒▒▒▒░▒░▒░▒▒▐
+                    <br> ░▌▒▒▒▒▒▒▀▀▀▒▒▒▒▒▒░▒░▒░▒░▒▒▒▌
+                    <br> ░▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▒▄▒▒▐
+                    <br> ░░▀▄▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▄▒▒▒▒▌
+                    <br> ░░░░▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀
+                    <br> ░░░░░░▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
+                    <br> ░░░░░░░░░▒▒▒▒▒▒▒▒▒▒▀▀
+                    <br>
+                </h2>
+            </div>
+            <div class="section">
+                <p>
+                    3
+                </p>
+            </div>
+            <div class="section">
+                <p>
+                    3
+                </p>
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function() {
+</div>
+<script>
+    $(document).ready(function () {
 
-            var cb = function(anchorLink, index){
-                    console.log(index);
-                    elems = $(".navigation-item")
-                    elems.removeClass('active')
-                    elems.eq(index-1).addClass('active')
-            }
-            $('#fullpage').fullpage({
-                afterLoad: cb,
-                onLeave : cb
-            });
+        var cb = function (anchorLink, index) {
+            console.log(index);
+            elems = $(".navigation-item")
+            elems.removeClass('active')
+            elems.eq(index - 1).addClass('active')
+        }
+        $('#fullpage').fullpage({
+            afterLoad: cb,
+            onLeave: cb
         });
-    </script>
+
+        generate_map(polarity_container_id, polarity_width, polarity_height, polarity_callback);
+    });
+</script>
 </body>
 
 </html>

@@ -49,7 +49,8 @@ var type_format_mappers = {
 
         return {
             "parser": parser,
-            "printer": printer
+            "printer": printer,
+            "tick_count": 5,
         }
     })(),
 
@@ -67,7 +68,68 @@ var type_format_mappers = {
 
         return {
             "parser": parser,
-            "printer": printer
+            "printer": printer,
+            "tick_count": 5
+        }
+    })(),
+    "days7": (function () {
+
+        var column_maps = {
+            "fridays_polarity": 5,
+            "mondays_polarity": 1,
+            "saturdays_polarity": 6,
+            "sundays_polarity": 7,
+            "thursdays_polarity": 4,
+            "tusedays_polarity": 2,
+            "wednsdays_polarity": 3
+        }
+
+        var column_str_maps = {
+            "fridays_polarity": "Friday",
+            "mondays_polarity": "Monday",
+            "saturdays_polarity": "Saturday",
+            "sundays_polarity": "Sunday",
+            "thursdays_polarity": "Thursday",
+            "tusedays_polarity": "Tuesday",
+            "wednsdays_polarity": "Wednesday"
+        }
+
+        var parser = function (column) {
+            //generates Date object out of that column string
+            // like "YYYY,MM,DD"
+            var date = new Date();
+            var currentDay = date.getDay();
+            var distance = column_maps[column] - currentDay;
+            date.setDate(date.getDate() + distance);
+            //console.log(column, date);
+            return date;
+        };
+
+        var printer = function (column) {
+            return column_str_maps[column];
+        }
+
+        return {
+            "parser": parser,
+            "printer": printer,
+            "tick_count": -1,
+        }
+    })(),
+    "monthly": (function () {
+        var parser = function (column) {
+            //generates Date object out of that column string
+            // like "YYYY,MM,DD"
+            return new Date(column.split("_po")[0].split("_").join("-") + "-01");
+        };
+
+        var printer = function (column) {
+            return column.split("_po")[0].split("_").join("-");
+        }
+
+        return {
+            "parser": parser,
+            "printer": printer,
+            "tick_count": 24
         }
     })()
 }
@@ -149,6 +211,7 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
 
     var column_to_date = type_format_mappers[data_source.type].parser;
     var column_printer = type_format_mappers[data_source.type].printer;
+    var tick_count = type_format_mappers[data_source.type].tick_count;
 
 
     var createScale = function (columns) {
@@ -255,7 +318,7 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
             .style("left", d3.mouse(this)[0] + sliderMargin + "px")
             .style("display", "block")
             .select("p")
-            .html(months[d.getMonth()] + " " + d.getFullYear())
+            .html(moment(d).format('dddd') + " " + months[d.getMonth()] + " " + d.getFullYear())
     }
 
     var createSlider = function () {
@@ -306,13 +369,21 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
             .tickValues(dateScale.ticks(orderedColumns.length).filter(function (d, i) {
                 // ticks only for beginning of each year, plus first and last
                 //return d.getMonth() == 0 || i == 0 || (i == orderedColumns.length - 1) || d.getMonth() % 6 == 0;
-                return i == 0 || (i == orderedColumns.length -1) || (i % Math.ceil(orderedColumns.length/6) == 0);
+                if (tick_count != -1)
+                    return i == 0 || (i == orderedColumns.length - 1) || (i % Math.ceil(orderedColumns.length / tick_count) == 0);
+                else
+                    return true;
                 //return true;
             }))
             .tickFormat(function (d) {
                 // abbreviated year for most, full month/year for the ends
                 //if (d.getMonth() == 0) return "'" + d.getFullYear().toString().substr(2);
-                return months[d.getMonth()] + " " + d.getFullYear();
+                if (tick_count != -1)
+                    return months[d.getMonth()] + " " + d.getFullYear();
+                else {
+                    console.log(d)
+                    return moment(d).format('dddd');
+                }
             })
         //.tickSize(10)
 
@@ -370,6 +441,8 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
             return column_to_date(a) - column_to_date(b);
         });
 
+        console.log(orderedColumns);
+
         // draw city points
         for (var i in data) {
 
@@ -403,7 +476,6 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
                 probe.style("display", "none");
             })
             .on("click", function (d) {
-                console.log(d);
                 var values = [];
                 var canton_data = canton_to_data_map[d.id];
                 for (var i in orderedColumns) {
@@ -512,7 +584,6 @@ function generate_map(data_source, container_id, width, height, cb) {
         probe = d3.select('body').append("div")
             .attr("id", container_id.substr(1) + "-probe")
             .attr("class", "probe");
-
 
 
         as_geojson.forEach(function (canton_geo) {

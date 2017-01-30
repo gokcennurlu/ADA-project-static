@@ -43,6 +43,9 @@
     <script src="https://d3js.org/topojson.v1.min.js"></script>
     <script src="js/d3.slider.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"
+            integrity="sha256-Gn7MUQono8LUxTfRA0WZzJgTua52Udm1Ifrk5421zkA=" crossorigin="anonymous"></script>
+
     <script src="js/polarity.js"></script>
 
     <link rel="stylesheet" href="css/d3.slider.css"/>
@@ -133,6 +136,8 @@
                             <select class="selectpicker">
                                 <option value="season">Seasonal</option>
                                 <option value="daily2012">2012 Daily</option>
+                                <option value="days7">Days of week</option>
+                                <option value="monthly">Monthly</option>
                             </select>
                         </div>
                         <div class="col-xs-10" style="padding-right: 20px;">
@@ -219,7 +224,7 @@
 
         $('.selectpicker').selectpicker({
             style: 'btn-default btn-sm',
-            size: 3
+            size: 7
         });
 
         var first_approach_map_types = {
@@ -236,6 +241,20 @@
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/daily2012/polarity_count_daily_2012.csv"
                 ],
                 type: "daily"
+            },
+            "days7": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/days7/polarity_avg_days.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/days7/polarity_count_days.csv"
+                ],
+                type: "days7"
+            },
+            "monthly": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/monthly/polarity_avg_monthly_2012_2016.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/monthly/polarity_count_monthly_2012_2016.csv"
+                ],
+                type: "monthly"
             }
         };
         var first_approach_map = generate_map(first_approach_map_types["daily2012"], "#first-section-contents", 900, 750, map_populator_callback);

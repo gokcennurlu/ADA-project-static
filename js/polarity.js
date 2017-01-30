@@ -405,7 +405,7 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
                 if (tick_count != -1)
                     return months[d.getMonth()] + " " + d.getFullYear();
                 else {
-                    console.log(d)
+                    //console.log(d)
                     return moment(d).format('dddd');
                 }
             })
@@ -465,7 +465,7 @@ var map_populator_callback = function (_container_id, _width, _height, map, path
             return column_to_date(a) - column_to_date(b);
         });
 
-        console.log(orderedColumns);
+        //console.log(orderedColumns);
 
         // draw city points
         for (var i in data) {

@@ -93,12 +93,15 @@
                 <li class="menu-item navigation-item">
                     <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(3);return false;">Emotion Analysis</a>
                 </li>
-                <!--li class="navigation-item">
-                    <a href="#" onclick="$.fn.fullpage.moveTo(3);return false;">Map2</a>
+                <li class="menu-item">
+                    <a href="#" onclick="return false;">Rule Based Lexicon Approach</a>
                 </li>
-                <li class="navigation-item">
-                    <a href="#" onclick="$.fn.fullpage.moveTo(4);return false;">Map3</a>
-                </li-->
+                <li class="menu-item navigation-item">
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(4);return false;">Sentiment Analysis</a>
+                </li>
+                <li class="menu-item navigation-item">
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(5);return false;">Emotion Analysis</a>
+                </li>
             </ul>
         </div>
         <div class="col-sm-10" id="fullpage">
@@ -170,31 +173,45 @@
                     Une carte sauvage doit apparaître ici (̿▀̿ ̿Ĺ̯̿̿▀̿ ̿)̄
                 </h1>
             </div>
-            <div class="section">
-                <h1>
-                    Burada çılgın bir harita yer alacak
-                </h1>
-                <h2>
-                    ░░░░░░░░░▄░░░░░░░░░░░░░░▄<br> ░░░░░░░░▌▒█░░░░░░░░░░░▄▀▒▌
-                    <br> ░░░░░░░░▌▒▒█░░░░░░░░▄▀▒▒▒▐
-                    <br> ░░░░░░░▐▄▀▒▒▀▀▀▀▄▄▄▀▒▒▒▒▒▐
-                    <br> ░░░░░▄▄▀▒░▒▒▒▒▒▒▒▒▒█▒▒▄█▒▐
-                    <br> ░░░▄▀▒▒▒░░░▒▒▒░░░▒▒▒▀██▀▒▌
-                    <br> ░░▐▒▒▒▄▄▒▒▒▒░░░▒▒▒▒▒▒▒▀▄▒▒▌
-                    <br> ░░▌░░▌█▀▒▒▒▒▒▄▀█▄▒▒▒▒▒▒▒█▒▐
-                    <br> ░▐░░░▒▒▒▒▒▒▒▒▌██▀▒▒░░░▒▒▒▀▄▌
-                    <br> ░▌░▒▄██▄▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▌
-                    <br> ▌▒▀▐▄█▄█▌▄░▀▒▒░░░░░░░░░░▒▒▒▐
-                    <br> ▐▒▒▐▀▐▀▒░▄▄▒▄▒▒▒▒▒▒░▒░▒░▒▒▒▒▌
-                    <br> ▐▒▒▒▀▀▄▄▒▒▒▄▒▒▒▒▒▒▒▒░▒░▒░▒▒▐
-                    <br> ░▌▒▒▒▒▒▒▀▀▀▒▒▒▒▒▒░▒░▒░▒░▒▒▒▌
-                    <br> ░▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▒▄▒▒▐
-                    <br> ░░▀▄▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▄▒▒▒▒▌
-                    <br> ░░░░▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀
-                    <br> ░░░░░░▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
-                    <br> ░░░░░░░░░▒▒▒▒▒▒▒▒▒▒▀▀
-                    <br>
-                </h2>
+            <div class="section" id="second-section-contents">
+                <div class="main-container">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <div class="date">
+                                <p class="month"></p>
+                            </div>
+                            <div class="play"></div>
+                            <select class="selectpicker">
+                                <option value="season">Seasonal</option>
+                                <option value="daily2012">2012 Daily</option>
+                                <option value="days7">Days of week</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="weekly">Weekly</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-10" style="padding-right: 20px;">
+                            <div class="slider-container">
+                                <div class="slider-div"></div>
+                                <div class="slider-probe">
+                                    <p></p>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="map-container"></div>
+                        </div>
+                        <div class="col-xs-4">
+                            <h2>
+                                Emotion graph
+                            </h2>
+                            <div class="chart-container">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="section">
                 <p>
@@ -265,6 +282,7 @@
                 type: "weekly"
             }
         };
+
         var first_approach_map = generate_map(first_approach_map_types["daily2012"], "#first-section-contents", 900, 750, map_populator_callback);
         $("#first-section-contents").find("select").on('change', function () {
             map_populator_callback(
@@ -278,6 +296,59 @@
                 first_approach_map.svg,
                 first_approach_map.g,
                 first_approach_map_types[this.value]);
+        });
+
+
+        var second_approach_map_types = {
+            "season": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/season/polarity_avg_season.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/season/polarity_count_season.csv"
+                ],
+                type: "season"
+            },
+            "daily2012": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/daily2012/polarity_avg_daily_2012.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/daily2012/polarity_count_daily_2012.csv"
+                ],
+                type: "daily"
+            },
+            "days7": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/days7/polarity_avg_days.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/days7/polarity_count_days.csv"
+                ],
+                type: "days7"
+            },
+            "monthly": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/monthly/polarity_avg_monthly_2012_2016.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/monthly/polarity_count_monthly_2012_2016.csv"
+                ],
+                type: "monthly"
+            },
+            "weekly": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/weekly/polarity_avg_weekly_2012_2016.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/weekly/polarity_count_weekly_2012_2016.csv"
+                ],
+                type: "weekly"
+            }
+        };
+        var second_approach_map = generate_map(second_approach_map_types["daily2012"], "#second-section-contents", 900, 750, map_populator_callback);
+        $("#second-section-contents").find("select").on('change', function () {
+            map_populator_callback(
+                second_approach_map.container_id,
+                second_approach_map.width,
+                second_approach_map.height,
+                second_approach_map.map,
+                second_approach_map.path,
+                second_approach_map.probe_selector,
+                second_approach_map.canton_id_to_geometry,
+                second_approach_map.svg,
+                second_approach_map.g,
+                second_approach_map_types[this.value]);
         });
     })
     ;

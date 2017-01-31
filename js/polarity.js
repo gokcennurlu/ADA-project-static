@@ -239,6 +239,8 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
     var tick_count = polarity_type_format_mappers[data_source.type].tick_count;
     var circle_multiplier = polarity_type_format_mappers[data_source.type].circle_multiplier;
 
+    var threshold = data_source.threshold || 0.07
+
 
 
 
@@ -307,14 +309,14 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
         map.selectAll('.canton').transition()  //select all the cantons and prepare for a transition to new values
             .duration(100)  // give it a smooth time period for the transition
             .attr('fill-opacity', function (d) {
-                var val = canton_to_data_map[d.id][raw_column_string] !== 'No Data' ? canton_to_data_map[d.id][raw_column_string] : 0.07;
+                var val = canton_to_data_map[d.id][raw_column_string] !== 'No Data' ? canton_to_data_map[d.id][raw_column_string] : threshold;
 
                 var transparency = getColor(val, [-0.2, 0.45]);
                 return transparency;// the end color value
             })
             .attr('fill', function (d) {
-                var val = canton_to_data_map[d.id][raw_column_string] !== 'No Data' ? canton_to_data_map[d.id][raw_column_string] : 0.07;
-                if (val > 0.07)
+                var val = canton_to_data_map[d.id][raw_column_string] !== 'No Data' ? canton_to_data_map[d.id][raw_column_string] : threshold;
+                if (val > threshold)
                     return "steelblue"
                 else
                     return "red"

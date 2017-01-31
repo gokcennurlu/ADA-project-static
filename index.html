@@ -412,35 +412,40 @@
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/Season/polarity_avg_season.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/Season/polarity_count_season.csv"
                 ],
-                type: "season"
+                type: "season",
+                threshold: 0.07
             },
             "daily2012": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/daily2012/polarity_avg_daily_2012.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/daily2012/polarity_count_daily_2012.csv"
                 ],
-                type: "daily"
+                type: "daily",
+                threshold: 0.07
             },
             "days7": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/days7/polarity_avg_days.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/days7/polarity_count_days.csv"
                 ],
-                type: "days7"
+                type: "days7",
+                threshold: 0.07
             },
             "monthly": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/monthly/polarity_avg_monthly_2012_2016.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/monthly/polarity_count_monthly_2012_2016.csv"
                 ],
-                type: "monthly"
+                type: "monthly",
+                threshold: 0.07
             },
             "weekly": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/weekly/polarity_avg_weekly_2012_2016.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/weekly/polarity_count_weekly_2012_2016.csv"
                 ],
-                type: "weekly"
+                type: "weekly",
+                threshold: 0.07
             }
         };
 
@@ -456,7 +461,8 @@
                 first_approach_polarity_map.canton_id_to_geometry,
                 first_approach_polarity_map.svg,
                 first_approach_polarity_map.g,
-                first_approach_polarity_map_types[this.value]);
+                first_approach_polarity_map_types[this.value]
+            );
         });
 
 
@@ -519,35 +525,40 @@
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/season/polarity_avg_season.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/season/polarity_count_season.csv"
                 ],
-                type: "season"
+                type: "season",
+                threshold: 0.03
             },
             "daily2012": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/daily2012/polarity_avg_daily_2012.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/daily2012/polarity_count_daily_2012.csv"
                 ],
-                type: "daily"
+                type: "daily",
+                threshold: 0.03
             },
             "days7": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/days7/polarity_avg_days.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/days7/polarity_count_days.csv"
                 ],
-                type: "days7"
+                type: "days7",
+                threshold: 0.03
             },
             "monthly": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/monthly/polarity_avg_monthly_2012_2016.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/monthly/polarity_count_monthly_2012_2016.csv"
                 ],
-                type: "monthly"
+                type: "monthly",
+                threshold: 0.03
             },
             "weekly": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/weekly/polarity_avg_weekly_2012_2016.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/weekly/polarity_count_weekly_2012_2016.csv"
                 ],
-                type: "weekly"
+                type: "weekly",
+                threshold: 0.03
             }
         };
         var second_approach_polarity_map = generate_map(second_approach_polarity_map_types["season"], "#second-section-polarity-contents", 900, 750, polarity_map_populator_callback);
@@ -625,35 +636,40 @@
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/word2vec/polarity_results_Word2vec/season/polarity_avg_season.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/word2vec/polarity_results_Word2vec/season/polarity_count_season.csv"
                 ],
-                type: "season"
+                type: "season",
+                threshold: 0.01
             },
             "daily2012": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/word2vec/polarity_results_Word2vec/daily2012/polarity_avg_daily_2012.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/word2vec/polarity_results_Word2vec/daily2012/polarity_count_daily_2012.csv"
                 ],
-                type: "daily"
+                type: "daily",
+                threshold: 0.01
             },
             "days7": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/word2vec/polarity_results_Word2vec/days7/polarity_avg_days.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/word2vec/polarity_results_Word2vec/days7/polarity_count_days.csv"
                 ],
-                type: "days7"
+                type: "days7",
+                threshold: 0.01
             },
             "monthly": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/word2vec/polarity_results_Word2vec/monthly/polarity_avg_monthly_2012_2016.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/word2vec/polarity_results_Word2vec/monthly/polarity_count_monthly_2012_2016.csv"
                 ],
-                type: "monthly"
+                type: "monthly",
+                threshold: 0.01
             },
             "weekly": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/word2vec/polarity_results_Word2vec/weekly/polarity_avg_weekly_2012_2016.csv",
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/word2vec/polarity_results_Word2vec/weekly/polarity_count_weekly_2012_2016.csv"
                 ],
-                type: "weekly"
+                type: "weekly",
+                threshold: 0.01
             }
         };
         var third_approach_polarity_map = generate_map(third_approach_polarity_map_types["season"], "#third-section-polarity-contents", 900, 750, polarity_map_populator_callback);

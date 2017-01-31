@@ -1,3 +1,7 @@
+RadarChart.defaultConfig.w = 300;
+RadarChart.defaultConfig.h = 300;
+
+
 var emotions = [
     "Anger", "Anticipation", "Disgust", "Fear", "Joy", "Sadness", "Surprise", "Trust"
 ];
@@ -29,7 +33,7 @@ var YELLOW = "#ffff66";
 var RED = "#ff6666";
 
 var color_map = {
-    "Anger": YELLOW,
+    "Anger": RED,
     "Anticipation": YELLOW,
     "Disgust": RED,
     "Fear": RED,
@@ -80,113 +84,115 @@ var emotion_type_format_mappers = {
             "circle_multiplier": 1
         }
     })(),
-    /*
-     "daily": (function () {
 
-     var parser = function (column) {
-     //generates Date object out of that column string
-     // like "YYYY,MM,DD"
-     return new Date(column.split("_")[0].split(",").join("-"));
-     };
+    "daily": (function () {
 
-     var printer = function (column) {
-     return column.split("_")[0].split(",").join("-");
-     }
+        var parser = function (column) {
+            //generates Date object out of that column string
+            // like "YYYY,MM,DD"
+            return new Date(column.split("_")[0].split(",").join("-"));
+        };
 
-     return {
-     "parser": parser,
-     "printer": printer,
-     "tick_count": 5,
-     "circle_multiplier": 100
-     }
-     })(),
-     "days7": (function () {
+        var printer = function (column) {
+            return column.split("_")[0].split(",").join("-");
+        }
 
-     var column_maps = {
-     "fridays_polarity": 5,
-     "mondays_polarity": 1,
-     "saturdays_polarity": 6,
-     "sundays_polarity": 7,
-     "thursdays_polarity": 4,
-     "tusedays_polarity": 2,
-     "wednsdays_polarity": 3
-     }
+        return {
+            "parser": parser,
+            "printer": printer,
+            "tick_count": 5,
+            "circle_multiplier": 100
+        }
+    })(),
 
-     var column_str_maps = {
-     "fridays_polarity": "Friday",
-     "mondays_polarity": "Monday",
-     "saturdays_polarity": "Saturday",
-     "sundays_polarity": "Sunday",
-     "thursdays_polarity": "Thursday",
-     "tusedays_polarity": "Tuesday",
-     "wednsdays_polarity": "Wednesday"
-     }
+    "days7": (function () {
 
-     var parser = function (column) {
-     //generates Date object out of that column string
-     // like "YYYY,MM,DD"
-     var date = new Date();
-     var currentDay = date.getDay();
-     var distance = column_maps[column] - currentDay;
-     date.setDate(date.getDate() + distance);
-     //console.log(column, date);
-     return date;
-     };
+        var column_maps = {
+            "fridays": 5,
+            "mondays": 1,
+            "saturdays": 6,
+            "sundays": 7,
+            "thursdays": 4,
+            "tusedays": 2,
+            "wednsdays": 3
+        }
 
-     var printer = function (column) {
-     return column_str_maps[column];
-     }
+        var column_str_maps = {
+            "fridays": "Friday",
+            "mondays": "Monday",
+            "saturdays": "Saturday",
+            "sundays": "Sunday",
+            "thursdays": "Thursday",
+            "tusedays": "Tuesday",
+            "wednsdays": "Wednesday"
+        }
 
-     return {
-     "parser": parser,
-     "printer": printer,
-     "tick_count": -1,
-     "circle_multiplier": 0.5
-     }
-     })(),
-     "monthly": (function () {
-     var parser = function (column) {
-     //generates Date object out of that column string
-     // like "YYYY_MM_DD_blabla"
-     return new Date(column.split("_po")[0].split("_").join("-") + "-01");
-     };
+        var parser = function (column) {
+            //generates Date object out of that column string
+            // like "YYYY,MM,DD"
+            var date = new Date();
+            var currentDay = date.getDay();
+            var distance = column_maps[column] - currentDay;
+            date.setDate(date.getDate() + distance);
+            //console.log(column, date);
+            return date;
+        };
 
-     var printer = function (column) {
-     return column.split("_po")[0].split("_").join("-");
-     }
+        var printer = function (column) {
+            return column_str_maps[column];
+        }
 
-     return {
-     "parser": parser,
-     "printer": printer,
-     "tick_count": 16,
-     "circle_multiplier": 3.5
-     }
-     })(),
-     "weekly": (function () {
-     var dateFromDay = function (year, day) {
-     var date = new Date(year, 0); // initialize a date in `year-01-01`
-     return new Date(date.setDate(day)); // add the number of days
-     }
+        return {
+            "parser": parser,
+            "printer": printer,
+            "tick_count": -1,
+            "circle_multiplier": 0.5
+        }
+    })(),
 
-     var parser = function (column) {
-     //generates Date object out of that column string
-     // like "YYYY__WEEKNUMBER_blabla"
-     var year = parseInt(column.split("_po")[0].split("_")[0]);
-     var week_num = parseInt(column.split("_po")[0].split("_")[1]);
-     return dateFromDay(year, week_num*7);
-     };
+    "monthly": (function () {
+        var parser = function (column) {
+            //generates Date object out of that column string
+            // like "YYYY_MM_blabla"
+            return new Date(column.split("_").join("-") + "-01");
+        };
 
-     var printer = function (column) {
-     return column.split("_po")[0].split("_").join("-");
-     }
+        var printer = function (column) {
+            return column.split("_").join("-");
+        }
 
-     return {
-     "parser": parser,
-     "printer": printer,
-     "tick_count": 16,
-     "circle_multiplier": 16
-     }
-     })()*/
+        return {
+            "parser": parser,
+            "printer": printer,
+            "tick_count": 16,
+            "circle_multiplier": 3.5
+        }
+    })(),
+    "weekly": (function () {
+        var dateFromDay = function (year, day) {
+            var date = new Date(year, 0); // initialize a date in `year-01-01`
+            return new Date(date.setDate(day)); // add the number of days
+        }
+
+        var parser = function (column) {
+            //generates Date object out of that column string
+            // like "YYYY__WEEKNUMBER_blabla"
+            var year = parseInt(column.split("_")[0]);
+            var week_num = parseInt(column.split("_")[1]);
+            return dateFromDay(year, week_num * 7);
+        };
+
+        var printer = function (column) {
+            return column.split("_").join("-");
+        }
+
+        return {
+            "parser": parser,
+            "printer": printer,
+            "tick_count": 16,
+            "circle_multiplier": 16
+        }
+    })()
 }
 /*
  var draw_line_chart = function (values, target) {
@@ -252,6 +258,8 @@ var emotion_type_format_mappers = {
  */
 var emotion_map_populator_callback = function (_container_id, _width, _height, map, path, probe_selector, canton_id_to_geometry, svg, g, data_source) {
 
+    var current_canton = null;
+
     var probe = d3.select(probe_selector);
 
     var VALUES_CSV = data_source.data[0];
@@ -269,6 +277,23 @@ var emotion_map_populator_callback = function (_container_id, _width, _height, m
     var tick_count = emotion_type_format_mappers[data_source.type].tick_count;
     var circle_multiplier = emotion_type_format_mappers[data_source.type].circle_multiplier;
 
+    var draw_radar = function () {
+        if(current_canton) {
+            var canton_data = canton_to_data_map[current_canton];
+            var axes = [];
+            for (var key in canton_data[orderedColumns[currentFrame]]) {
+                axes.push({
+                    "axis": key,
+                    "value": canton_data[orderedColumns[currentFrame]][key]
+                });
+            }
+            RadarChart.draw(_container_id + " .chart-container", [
+                {
+                    "axes": axes
+                }
+            ]);
+        }
+    }
 
     var circleSize = function (d) {
         return Math.abs(d) * 0.0005 * circle_multiplier;
@@ -282,10 +307,9 @@ var emotion_map_populator_callback = function (_container_id, _width, _height, m
 
 
     var setProbeContent = function (d) {
+        var canton_data = canton_to_data_map[d];
         //var val = d[orderedColumns[currentFrame]];
-        var val = JSON.stringify(d);
-        var html = "<strong>" + (d.canton || d.Canton) + "</strong><br/>Mood level " +
-            val + "<br/><span>" + column_printer(orderedColumns[currentFrame]) + "</span>";
+        var html = "<strong>" + (d) + "</strong>";
         probe.html(html);
     }
 
@@ -355,6 +379,8 @@ var emotion_map_populator_callback = function (_container_id, _width, _height, m
                     return color_map[get_best_emotion(canton_data[orderedColumns[currentFrame]])];
                 }
             });
+
+        draw_radar();
     }
 
 
@@ -559,9 +585,8 @@ var emotion_map_populator_callback = function (_container_id, _width, _height, m
 
         map.selectAll('.canton')
             .on("mousemove", function (d) {
-                var canton_data = canton_to_data_map[d.id];
-                hoverData = canton_data;
-                setProbeContent(canton_data);
+                hoverData = d.id;
+                setProbeContent(d.id);
                 probe
                     .style({
                         "display": "block",
@@ -574,18 +599,9 @@ var emotion_map_populator_callback = function (_container_id, _width, _height, m
                 probe.style("display", "none");
             })
             .on("click", function (d) {
-                var values = [];
-                var canton_data = canton_to_data_map[d.id];
-                console.log(canton_data);
-                /*for (var i in orderedColumns) {
-                 var date_column = orderedColumns[i];
-                 values.push({
-                 "value": (canton_data[date_column] !== "No Data") ? canton_data[date_column] : 0,
-                 "date": column_to_date(date_column)
-                 });
-                 }
-                 draw_line_chart(values, _container_id + " .chart-container");*/
-            })
+                current_canton = d.id;
+                draw_radar();
+            });
 
         //createLegend();
 

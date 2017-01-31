@@ -42,6 +42,7 @@
     <script src="https://d3js.org/d3.v3.js"></script>
     <script src="https://d3js.org/topojson.v1.min.js"></script>
     <script src="js/d3.slider.js"></script>
+    <script src="js/radar-chart.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"
             integrity="sha256-Gn7MUQono8LUxTfRA0WZzJgTua52Udm1Ifrk5421zkA=" crossorigin="anonymous"></script>
@@ -50,6 +51,7 @@
     <script src="js/emotion.js"></script>
 
     <link rel="stylesheet" href="css/d3.slider.css"/>
+    <link rel="stylesheet" href="css/radar-chart.css"/>
     <link rel="stylesheet" href="css/main.css"/>
 
 </head>
@@ -183,10 +185,10 @@
                             <div class="play"></div>
                             <select class="selectpicker">
                                 <option value="season">Seasonal</option>
-                                <!--option value="daily2012">2012 Daily</option>
+                                <option value="daily2012">2012 Daily</option>
                                 <option value="days7">Days of week</option>
                                 <option value="monthly">Monthly</option>
-                                <option value="weekly">Weekly</option-->
+                                <option value="weekly">Weekly</option>
                             </select>
                         </div>
                         <div class="col-xs-10" style="padding-right: 20px;">
@@ -253,10 +255,45 @@
                     </div>
                 </div>
             </div>
-            <div class="section">
-                <p>
-                    3
-                </p>
+            <div class="section" id="second-section-emotion-contents">
+                <div class="main-container">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <div class="date">
+                                <p class="month"></p>
+                            </div>
+                            <div class="play"></div>
+                            <select class="selectpicker">
+                                <option value="season">Seasonal</option>
+                                <option value="daily2012">2012 Daily</option>
+                                <option value="days7">Days of week</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="weekly">Weekly</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-10" style="padding-right: 20px;">
+                            <div class="slider-container">
+                                <div class="slider-div"></div>
+                                <div class="slider-probe">
+                                    <p></p>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="map-container"></div>
+                        </div>
+                        <div class="col-xs-4">
+                            <h2>
+                                Radar graph
+                            </h2>
+                            <div class="chart-container">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="section">
                 <p>
@@ -347,50 +384,50 @@
                 ],
                 type: "season"
             },
-            /*"daily2012": {
+            "daily2012": {
                 data: [
-                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/daily2012/polarity_avg_daily_2012.csv",
-                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/daily2012/polarity_count_daily_2012.csv"
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Emotion%20Analysis/daily2012/daily_2012_emotion_weight.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Emotion%20Analysis/daily2012/daily_2012_emotion_count.csv"
                 ],
                 type: "daily"
             },
             "days7": {
                 data: [
-                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/days7/polarity_avg_days.csv",
-                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/days7/polarity_count_days.csv"
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Emotion%20Analysis/days7/days_emotion_weights.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Emotion%20Analysis/days7/days_emotion_count.csv"
                 ],
                 type: "days7"
             },
             "monthly": {
                 data: [
-                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/monthly/polarity_avg_monthly_2012_2016.csv",
-                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/monthly/polarity_count_monthly_2012_2016.csv"
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Emotion%20Analysis/monthly/monthly_2012_2016_emotion_weight.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Emotion%20Analysis/monthly/monthly_2012_2016_emotion_count.csv"
                 ],
                 type: "monthly"
             },
             "weekly": {
                 data: [
-                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/weekly/polarity_avg_weekly_2012_2016.csv",
-                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/weekly/polarity_count_weekly_2012_2016.csv"
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Emotion%20Analysis/weekly/2012_to_2016_weekly_emotion_weight.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Emotion%20Analysis/weekly/2012_to_2016_weekly_emotion_count.csv"
                 ],
                 type: "weekly"
-            }*/
+            }
         };
 
         var first_approach_emotion_map = generate_map(first_approach_emotion_map_types["season"], "#first-section-emotion-contents", 900, 750, emotion_map_populator_callback);
-        /*$("#first-section-polarity-contents").find("select").on('change', function () {
-         polarity_map_populator_callback(
-         first_approach_polarity_map.container_id,
-         first_approach_polarity_map.width,
-         first_approach_polarity_map.height,
-         first_approach_polarity_map.map,
-         first_approach_polarity_map.path,
-         first_approach_polarity_map.probe_selector,
-         first_approach_polarity_map.canton_id_to_geometry,
-         first_approach_polarity_map.svg,
-         first_approach_polarity_map.g,
-         first_approach_polarity_map_types[this.value]);
-         });*/
+        $("#first-section-emotion-contents").find("select").on('change', function () {
+            emotion_map_populator_callback(
+                first_approach_emotion_map.container_id,
+                first_approach_emotion_map.width,
+                first_approach_emotion_map.height,
+                first_approach_emotion_map.map,
+                first_approach_emotion_map.path,
+                first_approach_emotion_map.probe_selector,
+                first_approach_emotion_map.canton_id_to_geometry,
+                first_approach_emotion_map.svg,
+                first_approach_emotion_map.g,
+                first_approach_emotion_map_types[this.value]);
+        });
 
         var second_approach_polarity_map_types = {
             "season": {
@@ -442,6 +479,59 @@
                 second_approach_polarity_map.svg,
                 second_approach_polarity_map.g,
                 second_approach_polarity_map_types[this.value]);
+        });
+
+
+        var second_approach_emotion_map_types = {
+            "season": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Emotion%20Analysis/seasons/season_emotion_weights.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Emotion%20Analysis/seasons/season_emotion_count.csv"
+                ],
+                type: "season"
+            },
+            "daily2012": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Emotion%20Analysis/daily2012/daily_2012_emotion_weight.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Emotion%20Analysis/daily2012/daily_2012_emotion_count.csv"
+                ],
+                type: "daily"
+            },
+            "days7": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Emotion%20Analysis/days7/days_emotion_weights.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Emotion%20Analysis/days7/days_emotion_count.csv"
+                ],
+                type: "days7"
+            },
+            "monthly": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Emotion%20Analysis/monthly/monthly_2012_2016_emotion_weight.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Emotion%20Analysis/monthly/monthly_2012_2016_emotion_count.csv"
+                ],
+                type: "monthly"
+            },
+            "weekly": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Emotion%20Analysis/weekly/2012_to_2016_weekly_emotion_weight.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Emotion%20Analysis/weekly/2012_to_2016_weekly_emotion_count.csv"
+                ],
+                type: "weekly"
+            }
+        };
+        var second_approach_emotion_map = generate_map(second_approach_emotion_map_types["season"], "#second-section-emotion-contents", 900, 750, emotion_map_populator_callback);
+        $("#second-section-emotion-contents").find("select").on('change', function () {
+            emotion_map_populator_callback(
+                second_approach_emotion_map.container_id,
+                second_approach_emotion_map.width,
+                second_approach_emotion_map.height,
+                second_approach_emotion_map.map,
+                second_approach_emotion_map.path,
+                second_approach_emotion_map.probe_selector,
+                second_approach_emotion_map.canton_id_to_geometry,
+                second_approach_emotion_map.svg,
+                second_approach_emotion_map.g,
+                second_approach_emotion_map_types[this.value]);
         });
     })
     ;

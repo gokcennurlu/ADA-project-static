@@ -1,21 +1,51 @@
-//GLOBALS
-var format = d3.format(",");
-var sliderMargin = 65;
+var emotions = [
+    "Anger", "Anticipation", "Disgust", "Fear", "Joy", "Sadness", "Surprise", "Trust"
+];
 
 
-function generate_swiss_projection(width, heigth) {
-    return d3.geo.albers()
-        .rotate([0, 0])
-        .center([8.42, 46.83])
-        .scale(15000)
-        .translate([width / 2, heigth / 2])
-        .precision(.1);
-}
+var svg_map = {
+    "Anger": "https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/svg/1f621.svg",
+    "Anticipation": "https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/svg/1f917.svg",
+    "Disgust": "https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/svg/1f620.svg",
+    "Fear": "https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/svg/1f631.svg",
+    "Joy": "https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/svg/1f603.svg",
+    "Sadness": "https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/svg/1f61e.svg",
+    "Surprise": "https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/svg/1f632.svg",
+    "Trust": "https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/svg/1f60c.svg"
+};
 
-var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    months_full = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var transparency_map = {
+    "Anger": 0.9,
+    "Anticipation": 0.2,
+    "Disgust": 0.5,
+    "Fear": 0.1,
+    "Joy": 0.9,
+    "Sadness": 0.5,
+    "Surprise": 0.4,
+    "Trust": 0.6
+};
 
-var polarity_type_format_mappers = {
+var YELLOW = "#ffff66";
+var RED = "#ff6666";
+
+var color_map = {
+    "Anger": YELLOW,
+    "Anticipation": YELLOW,
+    "Disgust": RED,
+    "Fear": RED,
+    "Joy": YELLOW,
+    "Sadness": RED,
+    "Surprise": YELLOW,
+    "Trust": YELLOW
+};
+
+var get_best_emotion = function (data) {
+    return Object.keys(data).reduce(function (a, b) {
+        return data[a] > data[b] ? a : b
+    });
+};
+
+var emotion_type_format_mappers = {
     "season": (function () {
         var year_list = [2012, 2013, 2014, 2015, 2016];
         var season_map = {
@@ -50,177 +80,177 @@ var polarity_type_format_mappers = {
             "circle_multiplier": 1
         }
     })(),
+    /*
+     "daily": (function () {
 
-    "daily": (function () {
+     var parser = function (column) {
+     //generates Date object out of that column string
+     // like "YYYY,MM,DD"
+     return new Date(column.split("_")[0].split(",").join("-"));
+     };
 
-        var parser = function (column) {
-            //generates Date object out of that column string
-            // like "YYYY,MM,DD"
-            return new Date(column.split("_")[0].split(",").join("-"));
-        };
+     var printer = function (column) {
+     return column.split("_")[0].split(",").join("-");
+     }
 
-        var printer = function (column) {
-            return column.split("_")[0].split(",").join("-");
-        }
+     return {
+     "parser": parser,
+     "printer": printer,
+     "tick_count": 5,
+     "circle_multiplier": 100
+     }
+     })(),
+     "days7": (function () {
 
-        return {
-            "parser": parser,
-            "printer": printer,
-            "tick_count": 5,
-            "circle_multiplier": 100
-        }
-    })(),
-    "days7": (function () {
+     var column_maps = {
+     "fridays_polarity": 5,
+     "mondays_polarity": 1,
+     "saturdays_polarity": 6,
+     "sundays_polarity": 7,
+     "thursdays_polarity": 4,
+     "tusedays_polarity": 2,
+     "wednsdays_polarity": 3
+     }
 
-        var column_maps = {
-            "fridays_polarity": 5,
-            "mondays_polarity": 1,
-            "saturdays_polarity": 6,
-            "sundays_polarity": 7,
-            "thursdays_polarity": 4,
-            "tusedays_polarity": 2,
-            "wednsdays_polarity": 3
-        }
+     var column_str_maps = {
+     "fridays_polarity": "Friday",
+     "mondays_polarity": "Monday",
+     "saturdays_polarity": "Saturday",
+     "sundays_polarity": "Sunday",
+     "thursdays_polarity": "Thursday",
+     "tusedays_polarity": "Tuesday",
+     "wednsdays_polarity": "Wednesday"
+     }
 
-        var column_str_maps = {
-            "fridays_polarity": "Friday",
-            "mondays_polarity": "Monday",
-            "saturdays_polarity": "Saturday",
-            "sundays_polarity": "Sunday",
-            "thursdays_polarity": "Thursday",
-            "tusedays_polarity": "Tuesday",
-            "wednsdays_polarity": "Wednesday"
-        }
+     var parser = function (column) {
+     //generates Date object out of that column string
+     // like "YYYY,MM,DD"
+     var date = new Date();
+     var currentDay = date.getDay();
+     var distance = column_maps[column] - currentDay;
+     date.setDate(date.getDate() + distance);
+     //console.log(column, date);
+     return date;
+     };
 
-        var parser = function (column) {
-            //generates Date object out of that column string
-            // like "YYYY,MM,DD"
-            var date = new Date();
-            var currentDay = date.getDay();
-            var distance = column_maps[column] - currentDay;
-            date.setDate(date.getDate() + distance);
-            //console.log(column, date);
-            return date;
-        };
+     var printer = function (column) {
+     return column_str_maps[column];
+     }
 
-        var printer = function (column) {
-            return column_str_maps[column];
-        }
+     return {
+     "parser": parser,
+     "printer": printer,
+     "tick_count": -1,
+     "circle_multiplier": 0.5
+     }
+     })(),
+     "monthly": (function () {
+     var parser = function (column) {
+     //generates Date object out of that column string
+     // like "YYYY_MM_DD_blabla"
+     return new Date(column.split("_po")[0].split("_").join("-") + "-01");
+     };
 
-        return {
-            "parser": parser,
-            "printer": printer,
-            "tick_count": -1,
-            "circle_multiplier": 0.5
-        }
-    })(),
-    "monthly": (function () {
-        var parser = function (column) {
-            //generates Date object out of that column string
-            // like "YYYY_MM_DD_blabla"
-            return new Date(column.split("_po")[0].split("_").join("-") + "-01");
-        };
+     var printer = function (column) {
+     return column.split("_po")[0].split("_").join("-");
+     }
 
-        var printer = function (column) {
-            return column.split("_po")[0].split("_").join("-");
-        }
+     return {
+     "parser": parser,
+     "printer": printer,
+     "tick_count": 16,
+     "circle_multiplier": 3.5
+     }
+     })(),
+     "weekly": (function () {
+     var dateFromDay = function (year, day) {
+     var date = new Date(year, 0); // initialize a date in `year-01-01`
+     return new Date(date.setDate(day)); // add the number of days
+     }
 
-        return {
-            "parser": parser,
-            "printer": printer,
-            "tick_count": 16,
-            "circle_multiplier": 3.5
-        }
-    })(),
-    "weekly": (function () {
-        var dateFromDay = function (year, day) {
-            var date = new Date(year, 0); // initialize a date in `year-01-01`
-            return new Date(date.setDate(day)); // add the number of days
-        }
+     var parser = function (column) {
+     //generates Date object out of that column string
+     // like "YYYY__WEEKNUMBER_blabla"
+     var year = parseInt(column.split("_po")[0].split("_")[0]);
+     var week_num = parseInt(column.split("_po")[0].split("_")[1]);
+     return dateFromDay(year, week_num*7);
+     };
 
-        var parser = function (column) {
-            //generates Date object out of that column string
-            // like "YYYY__WEEKNUMBER_blabla"
-            var year = parseInt(column.split("_po")[0].split("_")[0]);
-            var week_num = parseInt(column.split("_po")[0].split("_")[1]);
-            return dateFromDay(year, week_num*7);
-        };
+     var printer = function (column) {
+     return column.split("_po")[0].split("_").join("-");
+     }
 
-        var printer = function (column) {
-            return column.split("_po")[0].split("_").join("-");
-        }
-
-        return {
-            "parser": parser,
-            "printer": printer,
-            "tick_count": 16,
-            "circle_multiplier": 16
-        }
-    })()
+     return {
+     "parser": parser,
+     "printer": printer,
+     "tick_count": 16,
+     "circle_multiplier": 16
+     }
+     })()*/
 }
+/*
+ var draw_line_chart = function (values, target) {
+ var margin = {top: 30, right: 20, bottom: 30, left: 50},
+ width = 400 - margin.left - margin.right,
+ height = 270 - margin.top - margin.bottom;
 
-var draw_line_chart = function (values, target) {
-    var margin = {top: 30, right: 20, bottom: 30, left: 50},
-        width = 400 - margin.left - margin.right,
-        height = 270 - margin.top - margin.bottom;
+ // Set the ranges
+ var x = d3.time.scale().range([0, width]);
+ var y = d3.scale.linear().range([height, 0]);
 
-// Set the ranges
-    var x = d3.time.scale().range([0, width]);
-    var y = d3.scale.linear().range([height, 0]);
+ // Define the axes
+ var xAxis = d3.svg.axis().scale(x)
+ .orient("bottom").ticks(5);
 
-// Define the axes
-    var xAxis = d3.svg.axis().scale(x)
-        .orient("bottom").ticks(5);
+ var yAxis = d3.svg.axis().scale(y)
+ .orient("left").ticks(5);
 
-    var yAxis = d3.svg.axis().scale(y)
-        .orient("left").ticks(5);
+ // Define the line
+ var valueline = d3.svg.line()
+ .x(function (d) {
+ return x(d.date);
+ })
+ .y(function (d) {
+ return y(d.value);
+ });
 
-// Define the line
-    var valueline = d3.svg.line()
-        .x(function (d) {
-            return x(d.date);
-        })
-        .y(function (d) {
-            return y(d.value);
-        });
+ // Adds the svg canvas
+ d3.select(target + " svg").remove();
 
-// Adds the svg canvas
-    d3.select(target + " svg").remove();
+ var svg = d3.select(target)
+ .append("svg")
+ .attr("width", width + margin.left + margin.right)
+ .attr("height", height + margin.top + margin.bottom)
+ .append("g")
+ .attr("transform",
+ "translate(" + margin.left + "," + margin.top + ")");
 
-    var svg = d3.select(target)
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+ // Scale the range of the data
+ x.domain(d3.extent(values, function (d) {
+ return d.date;
+ }));
+ y.domain([0, d3.max(values, function (d) {
+ return d.value;
+ })]);
 
-    // Scale the range of the data
-    x.domain(d3.extent(values, function (d) {
-        return d.date;
-    }));
-    y.domain([0, d3.max(values, function (d) {
-        return d.value;
-    })]);
+ // Add the valueline path.
+ svg.append("path")
+ .attr("class", "line")
+ .attr("d", valueline(values));
 
-    // Add the valueline path.
-    svg.append("path")
-        .attr("class", "line")
-        .attr("d", valueline(values));
+ // Add the X Axis
+ svg.append("g")
+ .attr("class", "x axis")
+ .attr("transform", "translate(0," + height + ")")
+ .call(xAxis);
 
-    // Add the X Axis
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-    // Add the Y Axis
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
-}
-
-var polarity_map_populator_callback = function (_container_id, _width, _height, map, path, probe_selector, canton_id_to_geometry, svg, g, data_source) {
+ // Add the Y Axis
+ svg.append("g")
+ .attr("class", "y axis")
+ .call(yAxis);
+ }
+ */
+var emotion_map_populator_callback = function (_container_id, _width, _height, map, path, probe_selector, canton_id_to_geometry, svg, g, data_source) {
 
     var probe = d3.select(probe_selector);
 
@@ -234,12 +264,10 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
         frameLength = 1000,
         isPlaying = false;
 
-    var column_to_date = polarity_type_format_mappers[data_source.type].parser;
-    var column_printer = polarity_type_format_mappers[data_source.type].printer;
-    var tick_count = polarity_type_format_mappers[data_source.type].tick_count;
-    var circle_multiplier = polarity_type_format_mappers[data_source.type].circle_multiplier;
-
-
+    var column_to_date = emotion_type_format_mappers[data_source.type].parser;
+    var column_printer = emotion_type_format_mappers[data_source.type].printer;
+    var tick_count = emotion_type_format_mappers[data_source.type].tick_count;
+    var circle_multiplier = emotion_type_format_mappers[data_source.type].circle_multiplier;
 
 
     var circleSize = function (d) {
@@ -254,9 +282,10 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
 
 
     var setProbeContent = function (d) {
-        var val = d[orderedColumns[currentFrame]];
+        //var val = d[orderedColumns[currentFrame]];
+        var val = JSON.stringify(d);
         var html = "<strong>" + (d.canton || d.Canton) + "</strong><br/>Mood level " +
-            format(Math.abs(val)) + "<br/><span>" + column_printer(orderedColumns[currentFrame]) + "</span>";
+            val + "<br/><span>" + column_printer(orderedColumns[currentFrame]) + "</span>";
         probe.html(html);
     }
 
@@ -266,58 +295,65 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
             .domain([valuesIn[0], valuesIn[1]])  // input uses min and max values
             .range([0.01, 1]);   // output for opacity between .3 and 1 %
 
-        return Math.abs((color(valueIn)-0.5)*2);  // return that number to the caller
+        return Math.abs((color(valueIn) - 0.5) * 2);  // return that number to the caller
     }
 
     var drawFrame = function (raw_column_string, tween) {
+        var emoticons = map.selectAll('image')
+            .attr("href", function (d) {
+                if (d[orderedColumns[currentFrame]]) {
+                    return svg_map[get_best_emotion(d[orderedColumns[currentFrame]])];
+                }
+            });
+
+
         var circle = map.selectAll("circle")
         /*.attr("class", function (d) {
          return d[raw_column_string] > 0 ? "gain" : "loss";
          })*/
-        if (tween) {
-            circle
-                .transition()
-                .ease("linear")
-                .duration(frameLength)
-                .attr("r", function (d) {
-                    if (canton_to_count_map) {
-                        var count = canton_to_count_map[d.canton][raw_column_string];
-                        return circleSize((count !== "No Data") ? count : 0);
-                    }
-                    return 0;
-                });
-        } else {
-            circle.attr("r", function (d) {
-                if (canton_to_count_map) {
-                    var count = canton_to_count_map[d.canton][raw_column_string];
-                    return circleSize((count !== "No Data") ? count : 0);
-                }
-                return 0;
-            });
-        }
 
+        /*
+         if (tween) {
+         circle
+         .transition()
+         .ease("linear")
+         .duration(frameLength)
+         .attr("r", function (d) {
+         if (canton_to_count_map) {
+         var count = canton_to_count_map[d.canton][raw_column_string];
+         return circleSize((count !== "No Data") ? count : 0);
+         }
+         return 0;
+         });
+         } else {
+         circle.attr("r", function (d) {
+         if (canton_to_count_map) {
+         var count = canton_to_count_map[d.canton][raw_column_string];
+         return circleSize((count !== "No Data") ? count : 0);
+         }
+         return 0;
+         });
+         }
+         */
         d3.select(_container_id + " .date p.month").html(column_printer(raw_column_string));
 
         if (hoverData) {
             setProbeContent(hoverData);
         }
 
-
-        //var dataRange = getDataRange(); // get the min/max values from the current year's range of data values
         map.selectAll('.canton').transition()  //select all the cantons and prepare for a transition to new values
             .duration(100)  // give it a smooth time period for the transition
             .attr('fill-opacity', function (d) {
-                var val = canton_to_data_map[d.id][raw_column_string] !== 'No Data' ? canton_to_data_map[d.id][raw_column_string] : 0.07;
-
-                var transparency = getColor(val, [-0.2, 0.45]);
-                return transparency;// the end color value
+                var canton_data = canton_to_data_map[d.id];
+                if (canton_data[orderedColumns[currentFrame]]) {
+                    return transparency_map[get_best_emotion(canton_data[orderedColumns[currentFrame]])];
+                }
             })
             .attr('fill', function (d) {
-                var val = canton_to_data_map[d.id][raw_column_string] !== 'No Data' ? canton_to_data_map[d.id][raw_column_string] : 0.07;
-                if (val > 0.07)
-                    return "steelblue"
-                else
-                    return "red"
+                var canton_data = canton_to_data_map[d.id];
+                if (canton_data[orderedColumns[currentFrame]]) {
+                    return color_map[get_best_emotion(canton_data[orderedColumns[currentFrame]])];
+                }
             });
     }
 
@@ -364,7 +400,7 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
                 if (isPlaying) {
                     clearInterval(interval);
                 }
-                new_value = Math.floor(value);
+                var new_value = Math.floor(value);
                 if (new_value != currentFrame) {
                     currentFrame = new_value;
                     console.log("Updated!", currentFrame)
@@ -465,32 +501,61 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
         // get columns
         for (var mug in first) {
             if (mug.toLowerCase() != "canton") {
-                orderedColumns.push(mug);
+                var stripped = mug.split("_").slice(0, -1).join("_")
+                orderedColumns.push(stripped);
             }
         }
+
+        orderedColumns = orderedColumns.filter(function (item, pos) {
+            return orderedColumns.indexOf(item) == pos;
+        })
 
         orderedColumns.sort(function (a, b) {
             return column_to_date(a) - column_to_date(b);
         });
 
-        //console.log(orderedColumns);
+
+        console.log(orderedColumns);
 
         // draw city points
-        var counter = 0;
         for (var i in data) {
 
-            canton_to_data_map[data[i].canton || data[i].Canton] = data[i];
+            var canton_emotion_map = {};
+            for (var k in orderedColumns) {
+                var current_time_period_data = {};
+                for (var t = 0; t < emotions.length; t++) {
+                    var source_column_str = orderedColumns[k] + "_" + emotions[t];
+                    current_time_period_data[emotions[t]] = (data[i][source_column_str] !== "No Data") ? parseInt(data[i][source_column_str]) : 0;
+                }
+                canton_emotion_map[orderedColumns[k]] = current_time_period_data;
+            }
+
+            canton_to_data_map[data[i].canton || data[i].Canton] = canton_emotion_map;
 
             var related_geometry = canton_id_to_geometry[data[i].canton || data[i].Canton];
             var projected = path.centroid(related_geometry);
             //var projected = projection([parseFloat(data[i].LON), parseFloat(data[i].LAT)])
+
+
             map.append("circle")
-                .datum(data[i])
+                .datum(canton_emotion_map)
                 .attr("cx", projected[0])
                 .attr("cy", projected[1])
                 .attr("r", 1)
                 .attr("vector-effect", "non-scaling-stroke")
+
+            map.append("svg:image")
+                .datum(canton_emotion_map)
+                .attr("x", projected[0])
+                .attr("y", projected[1])
+                .attr("width", 30)
+                .attr("height", 30)
+                .attr('transform', "translate(-15,-15)")
+
+
         }
+
+        console.log(canton_to_data_map);
 
         map.selectAll('.canton')
             .on("mousemove", function (d) {
@@ -511,14 +576,15 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
             .on("click", function (d) {
                 var values = [];
                 var canton_data = canton_to_data_map[d.id];
-                for (var i in orderedColumns) {
-                    var date_column = orderedColumns[i];
-                    values.push({
-                        "value": (canton_data[date_column] !== "No Data") ? canton_data[date_column] : 0,
-                        "date": column_to_date(date_column)
-                    });
-                }
-                draw_line_chart(values, _container_id + " .chart-container");
+                console.log(canton_data);
+                /*for (var i in orderedColumns) {
+                 var date_column = orderedColumns[i];
+                 values.push({
+                 "value": (canton_data[date_column] !== "No Data") ? canton_data[date_column] : 0,
+                 "date": column_to_date(date_column)
+                 });
+                 }
+                 draw_line_chart(values, _container_id + " .chart-container");*/
             })
 
         //createLegend();

@@ -11,8 +11,8 @@
 }
 
 .canton {
-    fill: steelblue;
-    stroke: white;
+    /*fill: steelblue;*/
+    stroke: darkgray;
 }
 
 .navigation-item {
@@ -151,7 +151,7 @@ circle {
 }
 
 .map circle {
-    opacity: .65;
+    opacity: .35;
 }
 
 .map circle:hover {

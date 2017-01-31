@@ -47,6 +47,7 @@
             integrity="sha256-Gn7MUQono8LUxTfRA0WZzJgTua52Udm1Ifrk5421zkA=" crossorigin="anonymous"></script>
 
     <script src="js/polarity.js"></script>
+    <script src="js/emotion.js"></script>
 
     <link rel="stylesheet" href="css/d3.slider.css"/>
     <link rel="stylesheet" href="css/main.css"/>
@@ -105,8 +106,12 @@
             </ul>
         </div>
         <div class="col-sm-10" id="fullpage">
-            <div class="section">
-                <h1>Rationale</h1>
+            <div class="section" style="padding: 1vw;">
+                <h1 style="text-align: center; margin-bottom: 80px;">
+                    Estimation and Visualization of Canton-Level Moods using Hybrid Fine-Grained Emotion Analysis
+                    Methodologies
+                </h1>
+                <h3>Rationale</h3>
                 <p class="lead">
                     The increasing availability of geolocated data in social media opened new ventures in the
                     exploration and understanding of spatio-temporal movements patterns and possibilities to explain
@@ -119,16 +124,16 @@
                     visualizing happiness in the swiss cantons to provide users and the general public with an
                     interactive interface for mood pattern exploration using multiple time, space and user dimensions.
                 </p>
-                <h1>Methodology</h1>
+                <h3>Methodology</h3>
                 <p class="lead">
-                    We made use of dataset of 10M (?) geolocated tweets collected in the area of Switzerland. After
-                    removing duplicates, dealing with nulls, parsing and other data treatment, we assign each tweet to
-                    its corresponding canton based geolocation information. We then chunk the dataset based on the
-                    language detected. We have followed a hybrid methodology which combines rule based and learning
-                    based to strengthen traditional lexicon spotting.
+                    We made use of dataset of 12M geolocated tweets collected in the area of Switzerland. After removing
+                    duplicates, dealing with nulls, parsing and other data treatment, we assign each tweet to its
+                    corresponding canton based geolocation information. We then chunk the dataset based on the language
+                    detected. We have followed a hybrid methodology which combines rule based and learning based to
+                    strengthen traditional lexicon spotting.
                 </p>
             </div>
-            <div class="section" id="first-section-contents">
+            <div class="section" id="first-section-polarity-contents">
                 <div class="main-container">
                     <div class="row">
                         <div class="col-xs-2">
@@ -168,12 +173,47 @@
                     </div>
                 </div>
             </div>
-            <div class="section">
-                <h1>
-                    Une carte sauvage doit apparaître ici (̿▀̿ ̿Ĺ̯̿̿▀̿ ̿)̄
-                </h1>
+            <div class="section" id="first-section-emotion-contents">
+                <div class="main-container">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <div class="date">
+                                <p class="month"></p>
+                            </div>
+                            <div class="play"></div>
+                            <select class="selectpicker">
+                                <option value="season">Seasonal</option>
+                                <!--option value="daily2012">2012 Daily</option>
+                                <option value="days7">Days of week</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="weekly">Weekly</option-->
+                            </select>
+                        </div>
+                        <div class="col-xs-10" style="padding-right: 20px;">
+                            <div class="slider-container">
+                                <div class="slider-div"></div>
+                                <div class="slider-probe">
+                                    <p></p>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="map-container"></div>
+                        </div>
+                        <div class="col-xs-4">
+                            <h2>
+                                Radar graph
+                            </h2>
+                            <div class="chart-container">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="section" id="second-section-contents">
+            <div class="section" id="second-section-polarity-contents">
                 <div class="main-container">
                     <div class="row">
                         <div class="col-xs-2">
@@ -245,7 +285,7 @@
             size: 7
         });
 
-        var first_approach_map_types = {
+        var first_approach_polarity_map_types = {
             "season": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/Season/polarity_avg_season.csv",
@@ -283,23 +323,76 @@
             }
         };
 
-        var first_approach_map = generate_map(first_approach_map_types["daily2012"], "#first-section-contents", 900, 750, map_populator_callback);
-        $("#first-section-contents").find("select").on('change', function () {
-            map_populator_callback(
-                first_approach_map.container_id,
-                first_approach_map.width,
-                first_approach_map.height,
-                first_approach_map.map,
-                first_approach_map.path,
-                first_approach_map.probe_selector,
-                first_approach_map.canton_id_to_geometry,
-                first_approach_map.svg,
-                first_approach_map.g,
-                first_approach_map_types[this.value]);
+        var first_approach_polarity_map = generate_map(first_approach_polarity_map_types["season"], "#first-section-polarity-contents", 900, 750, polarity_map_populator_callback);
+        $("#first-section-polarity-contents").find("select").on('change', function () {
+            polarity_map_populator_callback(
+                first_approach_polarity_map.container_id,
+                first_approach_polarity_map.width,
+                first_approach_polarity_map.height,
+                first_approach_polarity_map.map,
+                first_approach_polarity_map.path,
+                first_approach_polarity_map.probe_selector,
+                first_approach_polarity_map.canton_id_to_geometry,
+                first_approach_polarity_map.svg,
+                first_approach_polarity_map.g,
+                first_approach_polarity_map_types[this.value]);
         });
 
 
-        var second_approach_map_types = {
+        var first_approach_emotion_map_types = {
+            "season": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Emotion%20Analysis/Season/season_emotion_weights.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Emotion%20Analysis/Season/season_emotion_count.csv"
+                ],
+                type: "season"
+            },
+            /*"daily2012": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/daily2012/polarity_avg_daily_2012.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/daily2012/polarity_count_daily_2012.csv"
+                ],
+                type: "daily"
+            },
+            "days7": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/days7/polarity_avg_days.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/days7/polarity_count_days.csv"
+                ],
+                type: "days7"
+            },
+            "monthly": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/monthly/polarity_avg_monthly_2012_2016.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/monthly/polarity_count_monthly_2012_2016.csv"
+                ],
+                type: "monthly"
+            },
+            "weekly": {
+                data: [
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/weekly/polarity_avg_weekly_2012_2016.csv",
+                    "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Simple%20Approach/Sentiment%20Analysis/weekly/polarity_count_weekly_2012_2016.csv"
+                ],
+                type: "weekly"
+            }*/
+        };
+
+        var first_approach_emotion_map = generate_map(first_approach_emotion_map_types["season"], "#first-section-emotion-contents", 900, 750, emotion_map_populator_callback);
+        /*$("#first-section-polarity-contents").find("select").on('change', function () {
+         polarity_map_populator_callback(
+         first_approach_polarity_map.container_id,
+         first_approach_polarity_map.width,
+         first_approach_polarity_map.height,
+         first_approach_polarity_map.map,
+         first_approach_polarity_map.path,
+         first_approach_polarity_map.probe_selector,
+         first_approach_polarity_map.canton_id_to_geometry,
+         first_approach_polarity_map.svg,
+         first_approach_polarity_map.g,
+         first_approach_polarity_map_types[this.value]);
+         });*/
+
+        var second_approach_polarity_map_types = {
             "season": {
                 data: [
                     "https://raw.githubusercontent.com/meryemmhamdi1/GMR_ADA_Project/master/Final%20Results/Rule%20Based%20Lexicon%20Approach/Sentiment%20Analysis/season/polarity_avg_season.csv",
@@ -336,19 +429,19 @@
                 type: "weekly"
             }
         };
-        var second_approach_map = generate_map(second_approach_map_types["daily2012"], "#second-section-contents", 900, 750, map_populator_callback);
-        $("#second-section-contents").find("select").on('change', function () {
-            map_populator_callback(
-                second_approach_map.container_id,
-                second_approach_map.width,
-                second_approach_map.height,
-                second_approach_map.map,
-                second_approach_map.path,
-                second_approach_map.probe_selector,
-                second_approach_map.canton_id_to_geometry,
-                second_approach_map.svg,
-                second_approach_map.g,
-                second_approach_map_types[this.value]);
+        var second_approach_polarity_map = generate_map(second_approach_polarity_map_types["season"], "#second-section-polarity-contents", 900, 750, polarity_map_populator_callback);
+        $("#second-section-polarity-contents").find("select").on('change', function () {
+            polarity_map_populator_callback(
+                second_approach_polarity_map.container_id,
+                second_approach_polarity_map.width,
+                second_approach_polarity_map.height,
+                second_approach_polarity_map.map,
+                second_approach_polarity_map.path,
+                second_approach_polarity_map.probe_selector,
+                second_approach_polarity_map.canton_id_to_geometry,
+                second_approach_polarity_map.svg,
+                second_approach_polarity_map.g,
+                second_approach_polarity_map_types[this.value]);
         });
     })
     ;

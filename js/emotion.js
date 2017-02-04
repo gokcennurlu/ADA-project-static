@@ -277,7 +277,7 @@ var emotion_map_populator_callback = function (_container_id, _width, _height, m
     var tick_count = emotion_type_format_mappers[data_source.type].tick_count;
     var circle_multiplier = emotion_type_format_mappers[data_source.type].circle_multiplier;
 
-    var draw_radar = function () {
+    var draw_radar = function (canton_name) {
         if(current_canton) {
             var canton_data = canton_to_data_map[current_canton];
             var axes = [];
@@ -292,6 +292,10 @@ var emotion_map_populator_callback = function (_container_id, _width, _height, m
                     "axes": axes
                 }
             ]);
+
+            $(_container_id + " .click-info").hide();
+            $(_container_id + " .canton-info").show();
+            $(_container_id + " .radar-canton-name").html(canton_name);
         }
     }
 
@@ -600,7 +604,7 @@ var emotion_map_populator_callback = function (_container_id, _width, _height, m
             })
             .on("click", function (d) {
                 current_canton = d.id;
-                draw_radar();
+                draw_radar(d.properties.name);
             });
 
         //createLegend();

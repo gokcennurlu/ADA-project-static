@@ -78,8 +78,6 @@
                 </li>
             </ul>
             <br>
-            <br>
-            <br>
             <h2 class="text-center">
                 Navigation
             </h2>
@@ -87,32 +85,38 @@
                 <li class="menu-item navigation-item">
                     <a href="#" onclick="$.fn.fullpage.moveTo(1);return false;">Introduction</a>
                 </li>
+                <li class="menu-item navigation-item">
+                    <a href="#" onclick="$.fn.fullpage.moveTo(2);return false;">How to use?</a>
+                </li>
                 <li class="menu-item">
                     <a href="#" onclick="return false;">Simple Approach</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(2);return false;">Sentiment Analysis</a>
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(3);return false;">Sentiment Analysis</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(3);return false;">Emotion Analysis</a>
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(4);return false;">Emotion Analysis</a>
                 </li>
                 <li class="menu-item">
                     <a href="#" onclick="return false;">Rule Based Lexicon Approach</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(4);return false;">Sentiment Analysis</a>
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(5);return false;">Sentiment Analysis</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(5);return false;">Emotion Analysis</a>
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(6);return false;">Emotion Analysis</a>
                 </li>
                 <li class="menu-item">
                     <a href="#" onclick="return false;">Rule Based Word2vec Approach</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(6);return false;">Sentiment Analysis</a>
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(7);return false;">Sentiment Analysis</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(7);return false;">Emotion Analysis</a>
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(8);return false;">Emotion Analysis</a>
+                </li>
+                <li class="menu-item navigation-item">
+                    <a href="#" onclick="$.fn.fullpage.moveTo(9);return false;">About</a>
                 </li>
             </ul>
         </div>
@@ -123,7 +127,7 @@
                     Methodologies
                 </h1>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-xs-12 col-xs-offset-0 col-sm-6 col-sm-offset-3">
                         <h3>Rationale</h3>
                         <p>
                             The increasing availability of geolocated data in social media opened new ventures in the
@@ -153,24 +157,46 @@
                             to
                             strengthen traditional lexicon spotting.
                         </p>
-                    </div>
-                    <div class="col-sm-6">
                         <h3>
                             About this page
                         </h3>
-                        This website provides an online platform for capturing sentiments and emotions expressed using
-                        twitter in swiss cantons. The platform uses Twitter as a data source and combines sentiment
-                        analysis, Hybrid Fine-Grained Emotion Analysis Methodologies, and visualization techniques in
-                        order to provide users with an interactive interface for data exploration.
+                        <p>
+                            This website provides an online platform for capturing sentiments and emotions expressed
+                            using
+                            twitter in swiss cantons. The platform uses Twitter as a data source and combines sentiment
+                            analysis, Hybrid Fine-Grained Emotion Analysis Methodologies, and visualization techniques
+                            in
+                            order to provide users with an interactive interface for data exploration.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="main-container">
+                    <div class="row">
+                        <div class="col-xs-12 col-xs-offset-0 col-sm-6 col-sm-offset-3">
+                            <p class="lead">
+                                This platform provides interactive maps in order to give users the possibility to have a
+                                comprehensive overview of the sentiment and emotion analysis results about Swiss cantons
+                                and
+                                with the opportunity to zoom in to a specific canton to visualize the distribution of
+                                emotions
+                                and sentiment during a specific time.
+                            </p>
+                            <p class="lead">
+                                <img src="img/screen.png" class="img-thumbnail"
+                                     style="width: auto; height: 150px; margin-right: 30px; float: left;">
+                                The platform allows users to tune their view on such huge amount of information and to
+                                interactively reduce the inherent complexity, possibly providing a hint for finding
+                                meaningful
+                                patterns, and correlation between moods/emotion and time.
+                                Each page with a map includes a dropdown menu to specify the aggregation method. As you
+                                change, it will rebuild the slider and the map. Play/pause buttons are for animation.
+                                Clicking on cantons also reveals more information about them.
+                            </p>
 
-                        This platform provides interactive maps in order to give users the possibility to have a
-                        comprehensive overview of the sentiment and emotion analysis results about Swiss cantons and
-                        with the opportunity to zoom in to a specific canton to visualize the distribution of emotions
-                        and sentiment during a specific time.
 
-                        The platform allows users to tune their view on such huge amount of information and to
-                        interactively reduce the inherent complexity, possibly providing a hint for finding meaningful
-                        patterns, and correlation between moods/emotion and time.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -205,10 +231,8 @@
                             <div class="map-container"></div>
                         </div>
                         <div class="col-xs-4">
-                            <h2>
-                                Polarity vs. Time
-                            </h2>
                             <div class="chart-container">
+                                <p class="text-center click-info">Click on cantons for more information!</p>
                             </div>
                         </div>
                     </div>
@@ -245,10 +269,14 @@
                             <div class="map-container"></div>
                         </div>
                         <div class="col-xs-4">
-                            <h2>
-                                Radar graph
-                            </h2>
                             <div class="chart-container">
+                                <p class="text-center click-info">Click on cantons for more information!</p>
+                                <p class="text-center canton-info" style="display: none;">
+                                    Emotion graph of
+                                    <br>
+                                    <span class="radar-canton-name" style="font-size: larger;">
+                                </span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -285,10 +313,8 @@
                             <div class="map-container"></div>
                         </div>
                         <div class="col-xs-4">
-                            <h2>
-                                Polarity vs. Time
-                            </h2>
                             <div class="chart-container">
+                                <p class="click-info">Click on cantons for more information!</p>
                             </div>
                         </div>
                     </div>
@@ -325,10 +351,14 @@
                             <div class="map-container"></div>
                         </div>
                         <div class="col-xs-4">
-                            <h2>
-                                Radar graph
-                            </h2>
                             <div class="chart-container">
+                                <p class="text-center click-info">Click on cantons for more information!</p>
+                                <p class="text-center canton-info" style="display: none;">
+                                    Emotion graph of
+                                    <br>
+                                    <span class="radar-canton-name" style="font-size: larger;">
+                                </span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -365,10 +395,8 @@
                             <div class="map-container"></div>
                         </div>
                         <div class="col-xs-4">
-                            <h2>
-                                Polarity vs. Time
-                            </h2>
                             <div class="chart-container">
+                                <p class="click-info">Click on cantons for more information!</p>
                             </div>
                         </div>
                     </div>
@@ -405,11 +433,74 @@
                             <div class="map-container"></div>
                         </div>
                         <div class="col-xs-4">
-                            <h2>
-                                Radar graph
-                            </h2>
                             <div class="chart-container">
+                                <p class="text-center click-info">Click on cantons for more information!</p>
+                                <p class="text-center canton-info" style="display: none;">
+                                    Emotion graph of
+                                    <br>
+                                    <span class="radar-canton-name" style="font-size: larger;">
+                                </span>
+                                </p>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section" id="about-section">
+                <div class="main-container">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <ul>
+                                <li>
+                                    <a href="https://jquery.com/" target="_blank">
+                                        jQuery
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="http://alvarotrigo.com/fullPage/" target="_blank">
+                                        jQuery fullpage plugin
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="http://getbootstrap.com/" target="_blank">
+                                        Bootstrap 3
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://silviomoreto.github.io/bootstrap-select/" target="_blank">
+                                        Bootstrap 3 select plugin
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://d3js.org/" target="_blank">
+                                        D3 (v3)
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://github.com/topojson/topojson" target="_blank">
+                                        Topojson
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://github.com/MasterMaps/d3-slider" target="_blank">
+                                        D3 Slider
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://github.com/alangrafu/radar-chart-d3" target="_blank">
+                                        D3 radar-chart plugin
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://momentjs.com/" target="_blank">
+                                        Moment
+                                    </a>
+                                </li>
+                            </ul>
+                            <br>
+                            has been used in this web interface.
+                            <br>
+                            Swiss map information taken from <a href="https://github.com/interactivethings/swiss-maps" target="_blank">here</a>.
                         </div>
                     </div>
                 </div>

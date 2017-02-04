@@ -5,8 +5,8 @@
 }
 
 .menu-item {
-    font-size: 22px;
-    padding: 10px;
+    font-size: 20px;
+    padding: 8px;
     font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -31,8 +31,8 @@
 }
 
 .padded {
-    padding-left: 20px;
-    font-size: 18px;
+    padding-left: 14px;
+    font-size: 16px;
 }
 
 /**map related **/
@@ -187,4 +187,13 @@ circle {
     stroke: grey;
     stroke-width: 1;
     shape-rendering: crispEdges;
+}
+
+.chart-container{
+    margin-top: 20vh;
+}
+
+.chart-container svg.radar-chart{
+    display: block;
+    margin: 10px auto;
 }

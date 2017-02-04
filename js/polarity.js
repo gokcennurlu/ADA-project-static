@@ -143,7 +143,7 @@ var polarity_type_format_mappers = {
             // like "YYYY__WEEKNUMBER_blabla"
             var year = parseInt(column.split("_po")[0].split("_")[0]);
             var week_num = parseInt(column.split("_po")[0].split("_")[1]);
-            return dateFromDay(year, week_num*7);
+            return dateFromDay(year, week_num * 7);
         };
 
         var printer = function (column) {
@@ -159,10 +159,13 @@ var polarity_type_format_mappers = {
     })()
 }
 
-var draw_line_chart = function (values, target) {
+var draw_line_chart = function (values, target, canton_name) {
+
+    $(target).html("");
+
     var margin = {top: 30, right: 20, bottom: 30, left: 50},
         width = 400 - margin.left - margin.right,
-        height = 270 - margin.top - margin.bottom;
+        height = 400 - margin.top - margin.bottom;
 
 // Set the ranges
     var x = d3.time.scale().range([0, width]);
@@ -204,9 +207,33 @@ var draw_line_chart = function (values, target) {
     })]);
 
     // Add the valueline path.
-    svg.append("path")
+    var path = svg.append("path")
         .attr("class", "line")
         .attr("d", valueline(values));
+
+
+    var totalLength = path.node().getTotalLength();
+
+    path.attr("stroke-dasharray", totalLength + " " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition()
+        .duration(1000)
+        .ease("cubic")
+        .attr("stroke-dashoffset", 0);
+
+    svg.append("text")
+        .attr("x", (width / 2))
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .text("Polarity vs. Time Graph");
+
+    svg.append("text")
+        .attr("x", (width / 2))
+        .attr("y", 0 - (margin.top / 2) + 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "18px")
+        .text(canton_name);
 
     // Add the X Axis
     svg.append("g")
@@ -242,8 +269,6 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
     var threshold = data_source.threshold || 0.07
 
 
-
-
     var circleSize = function (d) {
         return Math.abs(d) * 0.0005 * circle_multiplier;
     }
@@ -268,7 +293,7 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
             .domain([valuesIn[0], valuesIn[1]])  // input uses min and max values
             .range([0.01, 1]);   // output for opacity between .3 and 1 %
 
-        return Math.abs((color(valueIn)-0.5)*2);  // return that number to the caller
+        return Math.abs((color(valueIn) - 0.5) * 2);  // return that number to the caller
     }
 
     var drawFrame = function (raw_column_string, tween) {
@@ -520,7 +545,7 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
                         "date": column_to_date(date_column)
                     });
                 }
-                draw_line_chart(values, _container_id + " .chart-container");
+                draw_line_chart(values, _container_id + " .chart-container", d.properties.name);
             })
 
         //createLegend();

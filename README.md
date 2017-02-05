@@ -1,3 +1,5 @@
+# Used Libraries:
+
 *   [jQuery](https://jquery.com/)
 *   [jQuery fullpage plugin](http://alvarotrigo.com/fullPage/)
 *   [Bootstrap 3](http://getbootstrap.com/)

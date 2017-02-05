@@ -60,9 +60,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-2 bg-pattern" style="padding: 0; height:100vh;">
-            <h1 class="text-center">
+            <h2 class="text-center">
                 ADA Project
-            </h1>
+            </h2>
             <ul class="list-unstyled text-center">
                 <li>
                     Members (alphabetical)
@@ -77,9 +77,9 @@
                     <strong>Riyadh Alnasser</strong>
                 </li>
             </ul>
-            <h3 class="text-center">
+            <h4 class="text-center">
                 Navigation
-            </h3>
+            </h4>
             <ul class="list-unstyled">
                 <li class="menu-item navigation-item">
                     <a href="#" onclick="$.fn.fullpage.moveTo(1);return false;">Introduction</a>
@@ -87,35 +87,25 @@
                 <li class="menu-item navigation-item">
                     <a href="#" onclick="$.fn.fullpage.moveTo(2);return false;">How to use?</a>
                 </li>
-                <li class="menu-item">
-                    <a href="#" onclick="return false;">Simple Approach</a>
+                <li class="menu-item navigation-item">
+                    <a href="#" onclick="$.fn.fullpage.moveTo(3);return false;">Canton Mapping and Language
+                        Detection</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(3);return false;">Sentiment Analysis</a>
+                    <a href="#" onclick="$.fn.fullpage.moveTo(4);return false;">Description of Emotion model and
+                        Lexicon</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(4);return false;">Emotion Analysis</a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" onclick="return false;">Rule Based Lexicon Approach</a>
+                    <a href="#" onclick="$.fn.fullpage.moveTo(5);return false;">Simple Approach</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(5);return false;">Sentiment Analysis</a>
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(6);return false;">Sentiment Analysis</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(6);return false;">Emotion Analysis</a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" onclick="return false;">Rule Based Word2vec Approach</a>
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(7);return false;">Emotion Analysis</a>
                 </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(7);return false;">Sentiment Analysis</a>
-                </li>
-                <li class="menu-item navigation-item">
-                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(8);return false;">Emotion Analysis</a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" onclick="return false;">Semi-supervised approach</a>
+                    <a href="#" onclick="$.fn.fullpage.moveTo(8);return false;">Rule Based Lexicon Approach</a>
                 </li>
                 <li class="menu-item navigation-item">
                     <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(9);return false;">Sentiment Analysis</a>
@@ -123,8 +113,26 @@
                 <li class="menu-item navigation-item">
                     <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(10);return false;">Emotion Analysis</a>
                 </li>
+                <li class="menu-item">
+                    <a href="#" onclick="return false;">Rule Based Word2vec Approach</a>
+                </li>
                 <li class="menu-item navigation-item">
-                    <a href="#" onclick="$.fn.fullpage.moveTo(11);return false;">About</a>
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(11);return false;">Sentiment Analysis</a>
+                </li>
+                <li class="menu-item navigation-item">
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(12);return false;">Emotion Analysis</a>
+                </li>
+                <li class="menu-item navigation-item">
+                    <a href="#" onclick="$.fn.fullpage.moveTo(13);return false;">Semi-supervised approach</a>
+                </li>
+                <li class="menu-item navigation-item">
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(14);return false;">Sentiment Analysis</a>
+                </li>
+                <li class="menu-item navigation-item">
+                    <a href="#" class="padded" onclick="$.fn.fullpage.moveTo(15);return false;">Emotion Analysis</a>
+                </li>
+                <li class="menu-item navigation-item">
+                    <a href="#" onclick="$.fn.fullpage.moveTo(16);return false;">About</a>
                 </li>
             </ul>
         </div>
@@ -135,46 +143,46 @@
                     Methodologies
                 </h1>
                 <div class="row">
-                    <div class="col-xs-12 col-xs-offset-0 col-sm-6 col-sm-offset-3">
+                    <div class="col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1">
                         <h3>Rationale</h3>
                         <p>
-                            The increasing availability of geolocated data in social media opened new ventures in the
-                            exploration and understanding of spatio-temporal movements patterns and possibilities to
-                            explain
-                            such irregularities in the mobility data. Twitter offers both individual and crowd-based
-                            geotagged
-                            data at different levels of precision.
-
-                            The main objective of this project is to understand what triggers mobility in Switzerland by
-                            testimating how emotions of users change from one canton to another based on spatio-temporal
-                            data.
-                            We have followed fine-grained emotion recognition methodology and developped a platform for
-                            visualizing happiness in the swiss cantons to provide users and the general public with an
-                            interactive interface for mood pattern exploration using multiple time, space and user
-                            dimensions.
-                        </p>
-                        <h3>Methodology</h3>
-                        <p>
-                            We made use of dataset of 12M geolocated tweets collected in the area of Switzerland. After
-                            removing
-                            duplicates, dealing with nulls, parsing and other data treatment, we assign each tweet to
-                            its
-                            corresponding canton based geolocation information. We then chunk the dataset based on the
-                            language
-                            detected. We have followed a hybrid methodology which combines rule based and learning based
-                            to
-                            strengthen traditional lexicon spotting.
-                        </p>
-                        <h3>
-                            About this page
-                        </h3>
-                        <p>
                             This website provides an online platform for capturing sentiments and emotions expressed
-                            using
-                            twitter in swiss cantons. The platform uses Twitter as a data source and combines sentiment
-                            analysis, Hybrid Fine-Grained Emotion Analysis Methodologies, and visualization techniques
-                            in
-                            order to provide users with an interactive interface for data exploration.
+                            using twitter in swiss cantons. The platform uses Twitter as a data source and combines
+                            sentiment analysis, Hybrid Fine-Grained Emotion Analysis Methodologies, and visualization
+                            techniques in order to provide users with an interactive interface for data exploration.
+                            <br>
+                            <!--br>
+                            This platform provides interactive maps in order to give users the possibility to have a
+                            comprehensive overview of the sentiment and emotion analysis results about Swiss cantons and
+                            with the opportunity to zoom in to a specific canton to visualize the distribution of
+                            emotions and sentiment during a specific time.
+                            <br>
+                            <br>
+                            The platform allows users to tune their view on such huge amount of information and to
+                            interactively reduce the inherent complexity, possibly providing a hint for finding
+                            meaningful patterns, and correlation between moods/emotion and time.<!-->
+                        </p>
+                        <h3>Data Aggregation</h3>
+                        <p>
+                            In order to have meaningful results and allow the users to zoom in to a specific period of
+                            time
+                            and visualize the emotions and sentiments expressed in tweets for each canton, we have
+                            aggregate
+                            the data in five ways. First, we aggregate the data by season (Winter, Spring, Summer, and
+                            Fall), from the year of 2012 to 2016. Winter period is the months of December, January, and
+                            February. Spring period is the months of March, April, and May. Summer period is the months
+                            of
+                            June, July, and August. Fall period is the months of September, October, and November.
+                            Second,
+                            we aggregated the data by day. We choosed the year of 2012 and aggregated emotions and
+                            sentiments for each canton in a particular day. Third, we aggregated the data by month, from
+                            the
+                            year of 2012 to 2016. Forth, we aggregated the data by week, from the year of 2012 to 2016.
+                            Fifth, we aggregated the data by the day of the week(Mondays, Tuesdays, etc) from the year
+                            of
+                            2012 to 2016. This gives the users a way to explore the emotions and sentiments expressed in
+                            the
+                            tweets for each canton in different time granularity.
                         </p>
                     </div>
                 </div>
@@ -202,8 +210,94 @@
                                 change, it will rebuild the slider and the map. Play/pause buttons are for animation.
                                 Clicking on cantons also reveals more information about them.
                             </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="main-container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img src="img/tweets_distribution.png" style="float: left; margin: 15px; height: 200px;">
+                            <h2>Canton mapping</h2>
+                            <p>
+                                For canton mapping, we make use of the geogson file of Switzerland to extract the
+                                boundaries of swiss cantons and then we store them in range trees and using a
+                                computational geometry library (shapely) we were able to query the locations of tweets
+                                and map them to a cantons efficiently. At the end we show the number of tweets for each
+                                canton, Geneve has the highest number of tweets!
+                            </p>
 
+                            <br>
+                            <br>
+                            <br>
+                            <br>
 
+                            <h2>Language detection</h2>
+                            <p>
+                                <img src="img/top9_languages_switzerland.png"
+                                     style="float: right; margin: 10px; height: 200px;">
+                                <img src="img/top5_languages_VD.png" style="float: right; margin: 10px; height: 200px;">
+                                We use the langdetect 1.0.7 "Language detection library ported from Google's
+                                language-detection." to detect the language of each tweet we have in switzerland. Before
+                                applying the language detection algorithm we cleaned the tweet's text by removing
+                                urls, mentions, hashtags, and numbers! later we analyse tweets language distribution in
+                                switzerland and we observe that the top
+                                9 languages used are: French, English, German, Italian, Spanish, portuguese, Turkish,
+                                Arabic, and Dutch!. We did the same analysis for some cantons in Switzerland such as
+                                Vaud and we found that the top 5 languages used in tweets are French, English,
+                                portuguese, Spanish,
+                                and German. Also we did some analysis on the distribution of languages, considering only
+                                4 languages
+                                (English, French, German, and Italian) for some cantons!
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="main-container">
+                    <div class="row">
+                        <div class="col-xs-12 col-xs-offset-0">
+                            <img src="img/plutchik.jpg"
+                                 style="float: right; margin: 10px;">
+                            <h3>Fine Grained Emotion Recognition</h3>
+                            <p class="lead">
+                                We used Plutchik Wheel of Emotions as our model for fine-grained emotion analysis. It
+                                consists of 8 emotions: anger, anticipation, disgust, fear, joy, sadness, surprise and
+                                trust. We use NRC Lexicon which enumerates for each emotion category in another to
+                                polarity (positive and negative) a set of representative keywords. It contains on
+                                average 2000 words per each category and <a
+                                    href="http://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm">it has been
+                                translated to more than 40
+                                languages.</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="main-container">
+                    <div class="row">
+                        <div class="col-xs-12 col-xs-offset-0">
+                            <h3>Sentiment Analysis:</h3>
+                            <p class="lead">
+                                We apply a simple approach to analyse the sentiments of the tweets. We use a textblob
+                                library which has a support for 3 languages, English, French, and
+                                German.. the top three frequent languages in Switzerland. We do a simple cleaning before
+                                using TextBlob Sentiment Analyzer, such as removing http(s) links, hashtags and
+                                mentions.
+                            </p>
+                            <h3>Emotion Analysis:</h3>
+                            <p class="lead">
+                                We apply a simple approach to capture the emotions expressed in tweets. first, we clean
+                                the tweet by removing http(s) links,hashtags, and mentions. then we remove stop words.
+                                after that we use the NRC
+                                Emotion lexicon to look for emotion mapping for each word in a tweet and generate an
+                                emotion vector with 8 entries for each tweet, each entry in the vector represent a
+                                single emotion.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -237,6 +331,19 @@
                     <div class="row">
                         <div class="col-xs-8">
                             <div class="map-container"></div>
+                            <div style="width: 200px;">
+                                <span style="float: left">
+                                    -0.2
+                                </span>
+                                <span style="padding-left: 50px;" class="threshold-container">
+                                    0
+                                </span>
+                                <span style="float: right">
+                                    0.45
+                                </span>
+                                <div class="map-legend" style="height: 20px; width:100%;">
+                                </div>
+                            </div>
                         </div>
                         <div class="col-xs-4">
                             <div class="chart-container">
@@ -290,6 +397,82 @@
                     </div>
                 </div>
             </div>
+            <div class="section">
+                <div class="main-container">
+                    <div class="row">
+                        <div class="col-xs-12 col-xs-offset-0">
+                            <h3>Preliminary Data Cleaning and Pre-Processing:</h3>
+                            <p>
+                                After parsing and dealing with encoding issues, we tokenize the tweets into set of words
+                                using RegexpTokenizer which splits based on white spaces and punctuation. We perform
+                                more
+                                data cleaning such as stop word removal and lowercase conversion at a later stage since
+                                the
+                                accuracy of syntactic parsing and named entity recognition will highly depend on it. <a
+                                    href="https://github.com/meryemmhamdi1/GMR_ADA_Project/blob/master/Notebooks/II.%20Polarity%20and%20Emotion%20Recognition/4.%20Rule%20Based%20Affective%20Representation%20of%20Tweets.ipynb">Related
+                                notebook.</a>
+                            </p>
+                            <h3>Affective Feature Extraction:</h3>
+                            <p>
+                                Next, we perform rigorous syntactic analysis by applying part of speech tagging using
+                                nltk POS tagger in order to recognize N.A.V.A words (Nouns, Adjectives, Verbs and
+                                Adverbs) which are best candidates for carrying emotional content and Dependency Parsing
+                                using Stanford Dependency Parser to detect dependency relationships between words in the
+                                sentence. We focus on three types of dependencies: negation modifier (“this is not
+                                funny”), adjectival complement (“I feel depressed”) and adverbial modifier (“I struggled
+                                happily”). The objective is to adjust the representation of words based on the presence
+                                of stronger relationships for example, by detecting the negation dependency in the
+                                sentence “I am not happy”, its affective representation will not be the same as the
+                                sentence “I am happy” since the word happy is dependent on negation which will cancel
+                                its happiness emotion to be neutral. The emotion of a word is normalized using the mean
+                                of the dependent word “happy” and the word that it depends on “not”. After that, we
+                                perform more refinement of the word features of the sentence using Named Entity
+                                Recognition to remove the words that are proper nouns, places, monetary currencies and
+                                so since those don’t contain any affective content. <a
+                                    href="https://github.com/meryemmhamdi1/GMR_ADA_Project/blob/master/Notebooks/II.%20Polarity%20and%20Emotion%20Recognition/4.%20Rule%20Based%20Affective%20Representation%20of%20Tweets.ipynb">Related
+                                notebook.</a>
+                            </p>
+                            <h3>More Data Cleaning:</h3>
+                            <p>At this stage, we perform more term normalization by converting to lowercase and
+                                lemmatization using WordNetLemmatizer to reduce word to its root form. We choose not to
+                                use stemming since it cuts down words into meaningless words that are not contained in
+                                the lexicon. We also remove customized version stopwords to which we add some commonly
+                                used verbs that don’t express any emotion like “be”, “go”, “do”..
+                            </p>
+                            <h3>Computation of Emotional Vectors:</h3>
+                            <p>
+                                We compute word level emotional vectors where each word has a vector of 8 emotions + 2
+                                polarities values based on semantic relatedness scores between the word and the set of
+                                representative for the emotion/polarity category. Then we average by taking either
+                                geometric
+                                or arithmetic mean to get the tweet level emotional vectors. After that, we assign the
+                                dominant emotion to be the index with the highest score among emotion indices and the
+                                dominant polarity the index with the highest score among polarity indices if the highest
+                                score exceeds a certain threshold. In case, the highest score doesn’t exceed the
+                                threshold
+                                or the tweet doesn’t contain any nava words, we assign neutral. <a
+                                    href="https://github.com/meryemmhamdi1/GMR_ADA_Project/blob/master/Notebooks/II.%20Polarity%20and%20Emotion%20Recognition/5.%20Rule%20Based%20Fine%20Grained%20Lexicon%20Only%20Approach.ipynb">Related
+                                notebook.</a>
+                            </p>
+
+                            <h3>Semantic Similarity Methodology:</h3>
+                            <p>
+                                <img src="img/SimilarityFormula.png" style="float:left; margin: 5px; height: 120px;">
+                                Instead of solely relying on lexicon spotting to compare words in sentence with set of
+                                representative words for each emotion category, we also extend it with an approach from
+                                predictive distributional semantics based on Word Embedding. We use word2vec in order to
+                                compute semantic similarity relatedness scores between each word and a set of
+                                representative words of an emotion category by taking the geometric mean using the
+                                formula where w_i is the word, K_j is the set of representative
+                                words for particular emotion category e_j. <a
+                                    href="https://github.com/meryemmhamdi1/GMR_ADA_Project/blob/master/Notebooks/II.%20Polarity%20and%20Emotion%20Recognition/6.%20Rule%20Based%20Fine%20Grained%20Lexicon%20Extended%20with%20Word2Vec.ipynb">
+                                Related notebook.
+                            </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="section" id="second-section-polarity-contents">
                 <div class="main-container">
                     <div class="row">
@@ -319,6 +502,19 @@
                     <div class="row">
                         <div class="col-xs-8">
                             <div class="map-container"></div>
+                            <div style="width: 200px;">
+                                <span style="float: left">
+                                    -0.2
+                                </span>
+                                <span style="padding-left: 50px;" class="threshold-container">
+                                    0
+                                </span>
+                                <span style="float: right">
+                                    0.45
+                                </span>
+                                <div class="map-legend" style="height: 20px; width:100%;">
+                                </div>
+                            </div>
                         </div>
                         <div class="col-xs-4">
                             <div class="chart-container">
@@ -401,6 +597,19 @@
                     <div class="row">
                         <div class="col-xs-8">
                             <div class="map-container"></div>
+                            <div style="width: 200px;">
+                                <span style="float: left">
+                                    -0.2
+                                </span>
+                                <span style="padding-left: 50px;" class="threshold-container">
+                                    0
+                                </span>
+                                <span style="float: right">
+                                    0.45
+                                </span>
+                                <div class="map-legend" style="height: 20px; width:100%;">
+                                </div>
+                            </div>
                         </div>
                         <div class="col-xs-4">
                             <div class="chart-container">
@@ -454,8 +663,36 @@
                     </div>
                 </div>
             </div>
-            
-                        <div class="section" id="fourth-section-polarity-contents">
+            <div class="section">
+                <div class="main-container">
+                    <div class="row">
+                        <div class="col-xs-12 col-xs-offset-0">
+                            <h3>Semi-Supervised Approach:</h3>
+                            <p class="lead">
+                                We also tried training machine learning models on already annotated data from another
+                                domain
+                                and used domain adaptation to increase the generalizability of the model on the
+                                unnanotated
+                                tweets. We follow the same pipeline used for pre-processing and affective representation
+                                of
+                                words, then we convert them into numerical vectors using Continuous Bag of Words
+                                word2vec
+                                model with context window of 10, minimal word occurence of 4 and dimensionality of 300.
+                                Then, we average over word vectors to get the numerical vector representation of tweets.
+                                We
+                                follow machine learning pipeline to split data into train and test datasets, we deal
+                                with
+                                emotion class imbalances and we try different algorithms including random forest, svm,
+                                and
+                                knn and we compare them. <a
+                                    href="https://github.com/meryemmhamdi1/GMR_ADA_Project/blob/master/Notebooks/II.%20Polarity%20and%20Emotion%20Recognition/7.%20Semi-Supervised%20Fine-Grained%20Emotion%20Recognition%20Approach.ipynb">
+                                Related notebook.</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section" id="fourth-section-polarity-contents">
                 <div class="main-container">
                     <div class="row">
                         <div class="col-xs-2">
@@ -484,6 +721,19 @@
                     <div class="row">
                         <div class="col-xs-8">
                             <div class="map-container"></div>
+                            <div style="width: 200px;">
+                                <span style="float: left">
+                                    -0.2
+                                </span>
+                                <span style="padding-left: 50px;" class="threshold-container">
+                                    0
+                                </span>
+                                <span style="float: right">
+                                    0.45
+                                </span>
+                                <div class="map-legend" style="height: 20px; width:100%;">
+                                </div>
+                            </div>
                         </div>
                         <div class="col-xs-4">
                             <div class="chart-container">
@@ -537,7 +787,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="section" id="about-section">
                 <div class="main-container">
                     <div class="row">
@@ -953,9 +1203,8 @@
                 third_approach_emotion_map.g,
                 third_approach_emotion_map_types[this.value]);
         });
-        
-        
-        
+
+
         var fourth_approach_polarity_map_types = {
             "season": {
                 data: [

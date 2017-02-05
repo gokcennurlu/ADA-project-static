@@ -568,6 +568,13 @@ var polarity_map_populator_callback = function (_container_id, _width, _height, 
                 }
             });
 
+        //Append a defs (for definition) element to your SVG
+
+        /*var colorScale = d3.scale.linear().domain([-0.2, 0.45])
+            .range(["#FF0000", "#ffffff", "#4682b4"]);*/
+
+        $(_container_id + " .threshold-container").html(threshold);
+
         drawFrame(orderedColumns[currentFrame]); // initial map
         //window.onresize = resize;
         resize();

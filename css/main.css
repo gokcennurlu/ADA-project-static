@@ -5,8 +5,8 @@
 }
 
 .menu-item {
-    font-size: 20px;
-    padding: 5px;
+    font-size: 18px;
+    padding: 4px;
     font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -31,8 +31,8 @@
 }
 
 .padded {
-    padding-left: 14px;
-    font-size: 16px;
+    padding-left: 16px;
+    font-size: 15px;
 }
 
 /**map related **/
@@ -172,7 +172,6 @@ circle {
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
 }
 
-
 /*** charts **/
 
 .chart-container path {
@@ -189,11 +188,21 @@ circle {
     shape-rendering: crispEdges;
 }
 
-.chart-container{
+.chart-container {
     margin-top: 20vh;
 }
 
-.chart-container svg.radar-chart{
+.chart-container svg.radar-chart {
     display: block;
     margin: 10px auto;
+}
+
+.map-legend {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff3232+0,ffffff+50,4682b4+100 */
+    background: rgb(255, 50, 50); /* Old browsers */
+    background: -moz-linear-gradient(left, rgba(255, 50, 50, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(70, 130, 180, 1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, rgba(255, 50, 50, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(70, 130, 180, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgba(255, 50, 50, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(70, 130, 180, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3232', endColorstr='#4682b4', GradientType=1); /* IE6-9 */
+
 }
